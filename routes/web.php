@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('pagine', function() {
-    return \App\Page::all()->groupBy('lang');
-});
-
 Auth::routes();
 Route::get('logout','Auth\LoginController@logout');
 
@@ -32,6 +28,7 @@ Route::resources([
     'invoices' => 'InvoiceController',
     'locales' => 'LocaleController',
     'prenotations' => 'PrenotationController',
+    'pages' => 'PageController',
 ]);
 
 Route::get('options', 'OptionController@index')->name('options.index');
@@ -43,12 +40,15 @@ Route::resources([
     'camere' => 'RoomController',
     'fatture' => 'InvoiceController',
     'prenotazioni' => 'PrenotationController',
+    'pagine' => 'PageController',
 ]);
 
 
 Route::get('prenotations/get-customer/{id}', 'PrenotationController@getCustomerData')->name('prenotations.customer-data');
 Route::get('prenotations/conferma-disp/{id}', 'PrenotationController@getInviaConfermaDisp')->name('prenotations.conferma-disp');
 Route::get('invoices/get-prenotation/{id}', 'InvoiceController@getPrenotationData')->name('invoices.prenotation-data');
+
+Route::post('pages/upload','PageController@upload')->name('pages.upload');
 
 Route::post('rooms/upload','RoomController@upload')->name('rooms.upload');
 

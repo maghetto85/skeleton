@@ -20,6 +20,21 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property-write mixed $password
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @mixin \Eloquent
+ * @property int $IdUtente
+ * @property string $NomeUtente
+ * @property string $Nome
+ * @property string $email
+ * @property string $remember_token
+ * @property \Carbon\Carbon $DataCreazione
+ * @property \Carbon\Carbon $DataUltimoAccesso
+ * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereDataCreazione($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereDataUltimoAccesso($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereIdUtente($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereNome($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereNomeUtente($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\AdminUser wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereRememberToken($value)
  */
 
 class AdminUser extends Authenticatable

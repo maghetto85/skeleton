@@ -15,6 +15,71 @@ use Illuminate\Database\Eloquent\Builder;
  * @property-read $status
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation day($date)
  * @mixin \Eloquent
+ * @property int $id
+ * @property int $idcliente
+ * @property int $idcamera
+ * @property bool $stato
+ * @property bool $origine
+ * @property string $DataInserimento
+ * @property string $Nome
+ * @property string $Cognome
+ * @property string $Telefono
+ * @property string $Email
+ * @property \Carbon\Carbon $DataArrivo
+ * @property string $checkin
+ * @property \Carbon\Carbon $DataPartenza
+ * @property bool $NrAdulti
+ * @property bool $NrBambini
+ * @property string $Note
+ * @property float $acconto
+ * @property float $totale
+ * @property float $totale_prenotazione
+ * @property float $totale_versato
+ * @property float $acconto_versato
+ * @property float $saldo_versato
+ * @property bool $stato_pagamento_acconto
+ * @property \Carbon\Carbon $data_pagamento_acconto
+ * @property bool $stato_pagamento_saldo
+ * @property \Carbon\Carbon $data_pagamento_saldo
+ * @property bool $tipo_pagamento
+ * @property bool $stato_pagamento
+ * @property \Carbon\Carbon $DataPagamento
+ * @property-read mixed $cognome
+ * @property-read mixed $data_inserimento
+ * @property-read mixed $giorno_arrivo
+ * @property-read mixed $giorno_partenza
+ * @property-read mixed $name
+ * @property-read mixed $nome
+ * @property-read \App\Invoice $invoice
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereAcconto($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereAccontoVersato($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereCheckin($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereCognome($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataArrivo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataInserimento($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataPagamento($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataPagamentoAcconto($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataPagamentoSaldo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataPartenza($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereIdcamera($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereIdcliente($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereNome($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereNote($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereNrAdulti($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereNrBambini($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereOrigine($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereSaldoVersato($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereStato($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereStatoPagamento($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereStatoPagamentoAcconto($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereStatoPagamentoSaldo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereTelefono($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereTipoPagamento($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereTotale($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereTotalePrenotazione($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereTotaleVersato($value)
  */
 class Prenotation extends Model
 {
