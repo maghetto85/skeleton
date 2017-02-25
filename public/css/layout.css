@@ -1,0 +1,12 @@
+.occupata, .confermata {
+    background-color: red;
+    color: #fff;
+}
+
+.daconfermare {
+    background-color: orange;
+}
+
+.daconfermareweb {
+    background-color: #a2d246;
+}
