@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\HomeFoto
  *
- * @mixin \Eloquent
  * @property int $id
  * @property string $url
  * @property string $titolo
@@ -20,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\HomeFoto whereTitolo($value)
  * @method static \Illuminate\Database\Query\Builder|\App\HomeFoto whereTitoloEn($value)
  * @method static \Illuminate\Database\Query\Builder|\App\HomeFoto whereUrl($value)
+ * @mixin \Eloquent
  */
 class HomeFoto extends Model
 {

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\AdminMenu
  *
- * @mixin \Eloquent
  * @property int $id
  * @property string $titolo
  * @property string $url
@@ -22,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\AdminMenu whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\AdminMenu whereUrl($value)
  * @method static \Illuminate\Database\Query\Builder|\App\AdminMenu whereVisibile($value)
+ * @mixin \Eloquent
  */
 class AdminMenu extends Model
 {

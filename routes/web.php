@@ -29,6 +29,7 @@ Route::resources([
     'locales' => 'LocaleController',
     'prenotations' => 'PrenotationController',
     'pages' => 'PageController',
+    'pagesc' => 'PageCController',
 ]);
 
 Route::get('options', 'OptionController@index')->name('options.index');
@@ -41,6 +42,7 @@ Route::resources([
     'fatture' => 'InvoiceController',
     'prenotazioni' => 'PrenotationController',
     'pagine' => 'PageController',
+    'paginec' => 'PageCController',
 ]);
 
 
@@ -49,6 +51,8 @@ Route::get('prenotations/conferma-disp/{id}', 'PrenotationController@getInviaCon
 Route::get('invoices/get-prenotation/{id}', 'InvoiceController@getPrenotationData')->name('invoices.prenotation-data');
 
 Route::post('pages/upload','PageController@upload')->name('pages.upload');
+Route::post('pages/{page}/images/destroy/{id}', 'PageController@removeImage')->name('pages.images.remove');
+Route::post('pages/{page}/images/move/{id}', 'PageController@moveImage')->name('pages.images.move');
 
 Route::post('rooms/upload','RoomController@upload')->name('rooms.upload');
 

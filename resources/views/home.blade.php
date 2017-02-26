@@ -94,7 +94,7 @@
                 <tbody>
                 @foreach($rooms as $room)
                     <tr data-room="{{ $room->id }}">
-                        <td>{{ $room->titolo }}</td>
+                        <td style="white-space: nowrap;">{{ $room->titolo }}</td>
                         @for($i = 1; $i<32; $i++)
                             @php($date = \Carbon\Carbon::create($year, $month, $i))
                             @if($i > $monthdays)

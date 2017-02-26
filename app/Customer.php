@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Customer
  *
- * @mixin \Eloquent
  * @property int $id
  * @property string $nome
  * @property string $cognome
@@ -31,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Customer wherePartitaiva($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Customer whereProvincia($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Customer whereTelefono($value)
+ * @mixin \Eloquent
  */
 class Customer extends Model
 {

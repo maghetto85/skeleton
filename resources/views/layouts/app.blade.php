@@ -97,6 +97,16 @@
     <!-- Scripts -->
     <script src="/js/app.js"></script>
     <script src="/js/polyfill.js"></script>
+    <script>
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        });
+
+
+    </script>
 @yield('bottom')
 </body>
 </html>

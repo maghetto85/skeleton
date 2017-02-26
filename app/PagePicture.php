@@ -24,6 +24,7 @@ class PagePicture extends Model
 {
     protected $primaryKey = "IdFoto";
     protected $table = "pagine_foto";
+    public $incrementing = false;
     public $timestamps = false;
 
     public function page()

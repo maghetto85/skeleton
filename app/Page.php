@@ -12,14 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $Slug
  * @property string $Titolo
  * @property string $Contenuto
+ * @property-read \App\Locale $locale
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\PagePicture[] $pictures
  * @method static \Illuminate\Database\Query\Builder|\App\Page whereContenuto($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Page whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Page whereLang($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Page whereSlug($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Page whereTitolo($value)
  * @mixin \Eloquent
- * @property-read \App\Locale $locale
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\PagePicture[] $pictures
  */
 class Page extends Model
 {

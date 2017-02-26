@@ -9,12 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * App\Prenotation
  *
- * @property-read mixed $data_partenza
- * @property-read mixed $data_arrivo
- * @property-read \App\Room $room
- * @property-read $status
- * @method static \Illuminate\Database\Query\Builder|\App\Prenotation day($date)
- * @mixin \Eloquent
  * @property int $id
  * @property int $idcliente
  * @property int $idcamera
@@ -45,12 +39,17 @@ use Illuminate\Database\Eloquent\Builder;
  * @property bool $stato_pagamento
  * @property \Carbon\Carbon $DataPagamento
  * @property-read mixed $cognome
+ * @property-read mixed $data_arrivo
  * @property-read mixed $data_inserimento
+ * @property-read mixed $data_partenza
  * @property-read mixed $giorno_arrivo
  * @property-read mixed $giorno_partenza
  * @property-read mixed $name
  * @property-read mixed $nome
+ * @property-read mixed $status
  * @property-read \App\Invoice $invoice
+ * @property-read \App\Room $room
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation day($date)
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereAcconto($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereAccontoVersato($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereCheckin($value)
@@ -80,6 +79,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereTotale($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereTotalePrenotazione($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereTotaleVersato($value)
+ * @mixin \Eloquent
  */
 class Prenotation extends Model
 {

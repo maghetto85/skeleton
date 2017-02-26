@@ -113,14 +113,14 @@
             <div class="panel-body" id="images-box">
 
                 <ul id="images">
-                    @foreach($page->pictures as $pic)
-                        <li class="col-xs-6 col-sm-3 col-md-2" style="padding-bottom: 10px; height: 110px; text-align: center">
+                    @foreach($page->pictures()->orderBy('Posizione')->get() as $pic)
+                        <li class="col-xs-6 col-sm-3 col-md-2" style="padding-bottom: 10px; height: 110px; text-align: center" data-image="{{ $pic->IdFoto }}" data-position="{{ $pic->Posizione }}">
                             <div class="well" style="padding: 2px;">
                                 <img src="http://www.halex.it{{ $pic->Miniatura }}" alt="" class="img-rounded center-block" style="max-width: 100px; max-height: 100px;">
                                 <div class="btn-group btn-group-xs">
-                                    <button class="btn btn-default"><i class="fa fa-chevron-left"></i></button>
-                                    <button class="btn btn-default"><i class="fa fa-remove"></i></button>
-                                    <button class="btn btn-default"><i class="fa fa-chevron-right"></i></button>
+                                    <button class="btn btn-default btnMoveLeft"{{ $loop->first ? ' disabled' : '' }}><i class="fa fa-chevron-left"></i></button>
+                                    <button class="btn btn-default btnRemove"><i class="fa fa-remove"></i></button>
+                                    <button class="btn btn-default btnMoveRight"{{ $loop->last ? ' disabled' : '' }}><i class="fa fa-chevron-right"></i></button>
                                 </div>
                             </div>
                         </li>
@@ -183,7 +183,7 @@
 
             // Specify what files to browse for
             filters : [
-                {title : "Image files", extensions : "jpg,gif,png"}
+                {title : "Image files", extensions : "jpg,gif,png,jpeg"}
             ],
 
             // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
@@ -220,11 +220,54 @@
         });
 
         $(function() {
+
             $('button.btn-aggiungi-pic').click(function(e) {
                 e.preventDefault();
                 $('#uploader').show();
                 $('#images-box').hide();
+            });
+
+            $('#images-box').on('click','button.btnMoveLeft, button.btnMoveRight', function(e) {
+
+                var $this = $(this), $li = $this.parents('li').first(), id = $li.attr('data-image'), pos = parseInt($li.attr('data-position'));
+
+                if($this.is('.btnMoveLeft')) pos--; else pos++;
+
+                $.post('{{ route('pages.images.move', [$page->Id, null]) }}/'+id, {position: pos}, function() {
+
+                    $li.attr('data-position', pos);
+                    if($this.is('.btnMoveLeft')) {
+                        $li.insertBefore($li.prev());
+                    } else {
+                        $li.insertAfter($li.next());
+                    }
+                    $('div#images-box li').each(function(id, li) {
+
+                        $(li).find('button.btnMoveLeft').prop('disabled',$(li).is(':first-child'));
+                        $(li).find('button.btnMoveRight').prop('disabled',$(li).is(':last-child'));
+
+                    })
+                });
+
+
+
+            }).on('click','button.btnRemove', function(e) {
+
+                var $this = $(this), $li = $this.parents('li').first(), id = $li.attr('data-image');
+
+                $.post('{{ route('pages.images.remove', [$page->Id, null]) }}/'+id, function() {
+                    $li.remove();
+                    $('div#images-box li').each(function(id, li) {
+
+                        $(li).find('button.btnMoveLeft').prop('disabled',$(li).is(':first-child'));
+                        $(li).find('button.btnMoveRight').prop('disabled',$(li).is(':last-child'));
+
+                    })
+                });
+
             })
+
+
         })
 
     </script>

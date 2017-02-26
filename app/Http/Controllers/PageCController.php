@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Page;
+use App\PageC;
 use App\PagePicture;
 use Illuminate\Http\Request;
 use Imagine\Image\Box;
 
-class PageController extends Controller
+class PageCController extends Controller
 {
     public function __construct()
     {
@@ -16,7 +17,7 @@ class PageController extends Controller
 
     public function index()
     {
-        $pages = \App\Page::query();
+        $pages = \App\PageC::query();
 
         if($q = request('q')) {
 
@@ -35,13 +36,13 @@ class PageController extends Controller
 
         $pages = $pages->paginate(25);
 
-        return view('pages.index', compact('pages'));
+        return view('pagesc.index', compact('pages'));
     }
 
     public function create()
     {
-        $page = new Page();
-        return view('pages.form', compact('page'));
+        $page = new PageC();
+        return view('pagesc.form', compact('page'));
     }
 
     public function show($id)
@@ -51,8 +52,8 @@ class PageController extends Controller
 
     public function edit($id)
     {
-        $page = Page::find($id);
-        return view('pages.form', compact('page'));
+        $page = PageC::find($id);
+        return view('pagesc.form', compact('page'));
     }
 
     public function store()
@@ -107,54 +108,28 @@ class PageController extends Controller
         return $picture;
     }
 
-    public function removeImage(Page $page, $id)
-    {
-        $image = $page->pictures()->find($id);
-        if($image) {
-            $image->delete();
-        }
-
-        return $image;
-    }
-
-    public function moveImage(Page $page, $id)
-    {
-        $pos = request('position');
-        $image = $page->pictures()->find($id);
-        if($image) {
-
-            $page->pictures()->wherePosizione($pos)->update(['Posizione' => $image->Posizione]);
-            $image->posizione = $pos;
-            $image->save();
-
-        }
-
-        return $image;
-    }
-
 
 
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'Slug' => "required|string|unique:paginec,slug|unique:pagine,Slug,$id",
-            'Titolo' => "required|string",
-            'Contenuto' => "required|string",
+            'slug' => "required|string|unique:pagine,Slug|unique:paginec,slug,$id",
+            'titolo' => "required|string",
         ]);
 
-        $page = Page::query()->updateOrCreate(['id' => $id], $request->all());
+        $page = PageC::query()->updateOrCreate(['id' => $id], $request->all());
 
         if($page->wasRecentlyCreated) {
-            return redirect()->action('PageController@edit', $page->Id);
+            return redirect()->action('PageCController@edit', $page->Id);
         }
 
-        return redirect()->action('PageController@index');
+        return redirect()->action('PageCController@index');
     }
 
     public function destroy($id)
     {
-        Page::destroy($id);
-        return redirect()->action('PageController@index');
+        PageC::destroy($id);
+        return redirect()->action('PageCController@index');
     }
 
 }

@@ -7,26 +7,17 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
- * Class AdminUser
+ * App\AdminUser
  *
- * @package App
- * @property integer IdUtente
- * @property string NomeUtente
- * @property string Password
- * @property string Nome
- * @property string Email
- * @property Carbon DataCreazione
- * @property Carbon DataUltimoAccesso
- * @property-write mixed $password
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @mixin \Eloquent
  * @property int $IdUtente
  * @property string $NomeUtente
+ * @property mixed $password
  * @property string $Nome
  * @property string $email
  * @property string $remember_token
  * @property \Carbon\Carbon $DataCreazione
  * @property \Carbon\Carbon $DataUltimoAccesso
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereDataCreazione($value)
  * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereDataUltimoAccesso($value)
  * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereEmail($value)
@@ -35,6 +26,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereNomeUtente($value)
  * @method static \Illuminate\Database\Query\Builder|\App\AdminUser wherePassword($value)
  * @method static \Illuminate\Database\Query\Builder|\App\AdminUser whereRememberToken($value)
+ * @mixin \Eloquent
  */
 
 class AdminUser extends Authenticatable
