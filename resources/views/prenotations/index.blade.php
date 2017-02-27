@@ -93,10 +93,10 @@
                 @forelse($prenotations as $prenotation)
                 <tr>
                     <td class="text-center success">
-                        <a href="{{ route('prenotations.edit', $prenotation->id) }}"><i class="fa fa-fw fa-pencil"></i></a>
+                        <a class="btn btn-xs btn-success" href="{{ route('prenotations.edit', $prenotation->id) }}"><i class="fa fa-fw fa-pencil"></i></a>
                     </td>
                     <td class="text-center danger">
-                        <a href="#elimina" data-toggle="modal" data-id="{{ $prenotation->id }}" data-name="{{ $prenotation->titolo }}"><i class="fa fa-fw fa-remove"></i></a>
+                        <a class="btn btn-xs btn-danger" href="#elimina" data-toggle="modal" data-id="{{ $prenotation->id }}" data-name="Prenotazione #{{ $prenotation->id }}"><i class="fa fa-fw fa-remove"></i></a>
                     </td>
                     <td class="text-right">{{ $prenotation->DataArrivo }}</td>
                     <td>{{ $prenotation->DataPartenza }}</td>

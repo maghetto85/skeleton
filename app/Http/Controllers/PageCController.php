@@ -120,7 +120,7 @@ class PageCController extends Controller
         $page = PageC::query()->updateOrCreate(['id' => $id], $request->all());
 
         if($page->wasRecentlyCreated) {
-            return redirect()->action('PageCController@edit', $page->Id);
+            return redirect()->action('PageCController@edit', $page->id);
         }
 
         return redirect()->action('PageCController@index');

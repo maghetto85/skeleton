@@ -14,6 +14,8 @@
     <link href="/css/app.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/layout.css?t={{ time() }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
     <style>
         table {
             font-size: 12px;
@@ -97,6 +99,8 @@
     <!-- Scripts -->
     <script src="/js/app.js"></script>
     <script src="/js/polyfill.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
     <script>
 
         $.ajaxSetup({

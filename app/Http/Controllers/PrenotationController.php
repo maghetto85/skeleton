@@ -6,6 +6,7 @@ use App\Customer;
 use App\Prenotation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 
 class PrenotationController extends Controller
 {
@@ -189,9 +190,73 @@ class PrenotationController extends Controller
 
     public function getInviaConfermaDisp(Prenotation $id)
     {
-        return get_option("prenotazioni.email.conferma");
+        return [
+            'subject' => 'Conferma Disponibilità Camera - Halex',
+            'html' => get_option("prenotazioni.email.conferma")
+        ];
+
     }
 
+    public function getInviaConfermaPrenotazione(Prenotation $id)
+    {
+        return [
+            'subject' => 'Conferma Prenotazione - Halex',
+            'html' => get_option("email.cameraconfermata.body")
+        ];
+    }
 
+    public function postInviaConferma(Prenotation $prenotation)
+    {
+        if($prenotation->exists && $prenotation->Email) {
+
+            $message = request('message');
+            $type = request('type');
+            $message = str_replace("[dataarrivo]", $prenotation->DataArrivo, $message);
+            $message = str_replace("[datapartenza]", $prenotation->DataPartenza, $message);
+            $message = str_replace("[camera_titolo]", $prenotation->room->titolo, $message);
+
+            $titolo = "Prenotazione Halex dal {$prenotation->DataArrivo} al {$prenotation->DataPartenza}, Camera {$prenotation->room->titolo}";
+
+            $sandbox = get_option('paypal.sandbox') ? 'sandbox.' : '';
+            $account = get_option('paypal.email');
+
+            $acconto = "https://www.{$sandbox}paypal.com/cgi-bin/webscr/?cmd=_xclick&business={$account}&item_name=Acconto su {$titolo}&amount={$prenotation->acconto}";
+            $acconto.= "&currency_code=EUR&lc=IT&notify_url=http://www.halex.it/admin/paypal_ipn.asp&return=http://www.halex.it/conferma_pagamento";
+            $acconto = "<a href=\"$acconto\">Effettua Ora il Pagamento con PayPal</a>";
+
+            $saldo = "https://www.{$sandbox}paypal.com/cgi-bin/webscr/?cmd=_xclick&business={$account}&item_name=Saldo {$titolo}&amount={$prenotation->totale}";
+            $saldo.= "&currency_code=EUR&lc=IT&notify_url=http://www.halex.it/admin/paypal_ipn.asp&return=http://www.halex.it/conferma_pagamento";
+            $saldo = "<a href=\"$saldo\">Effettua Ora il Pagamento con PayPal</a>";
+
+            $message = str_replace("[link_paypal_acconto]", $acconto, $message);
+            $message = str_replace("[link_paypal_saldo]", $saldo, $message);
+
+
+            foreach($prenotation->getAttributes() as $name => $value) {
+                $name = strtolower($name);
+                $message = str_replace("[$name]", $value, $message);
+            }
+
+
+
+
+            $subject = request('subject');
+
+            \Mail::raw(strip_tags($message), function (Message $mail) use($prenotation, $subject, $message) {
+                $mail->to($prenotation->Email, trim($prenotation->Nome.' '.$prenotation->Cognome));
+                $mail->setBody($message, 'text/html');
+                $mail->subject($subject);
+
+            });
+
+            $prenotation->update([$type => \Carbon\Carbon::now()]);
+
+            return $prenotation;
+
+        }
+
+        return [];
+
+    }
 
 }

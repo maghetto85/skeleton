@@ -38,6 +38,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property bool $tipo_pagamento
  * @property bool $stato_pagamento
  * @property \Carbon\Carbon $DataPagamento
+ * @property \Carbon\Carbon $data_conferma_disp
+ * @property \Carbon\Carbon $data_conferma_prenotazione
  * @property-read mixed $cognome
  * @property-read mixed $data_arrivo
  * @property-read mixed $data_inserimento
@@ -55,6 +57,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereCheckin($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereCognome($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataArrivo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataConfermaDisp($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataConfermaPrenotazione($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataInserimento($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataPagamento($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Prenotation whereDataPagamentoAcconto($value)
@@ -86,7 +90,7 @@ class Prenotation extends Model
     protected $table = 'prenotazioni';
     protected $guarded = [];
     public $timestamps = false;
-    public $dates = ['DataPartenza','DataArrivo','data_pagamento_acconto','data_pagamento_saldo','DataPagamento','name'];
+    public $dates = ['DataPartenza','DataArrivo','data_pagamento_acconto','data_pagamento_saldo','DataPagamento','name','data_conferma_disp','data_conferma_prenotazione'];
     public $appends = ['DataPartenza','DataArrivo','Nome','Cognome','name'];
     const CREATED_AT = 'DataInserimento';
 

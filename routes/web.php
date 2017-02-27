@@ -14,22 +14,20 @@
 Auth::routes();
 Route::get('logout','Auth\LoginController@logout');
 
-Route::get('customers', function() {
-
-    return \File::files(realpath(app_path('../../httpdocs/uploads/home')));
-
-    return \App\Customer::all();
-});
-
 Route::resources([
     'rooms' => 'RoomController',
     'admin-users' => 'AdminUserController',
     'admin-menu' => 'AdminMenuController',
+    'clienti' => 'CustomerController',
+    'customers' => 'CustomerController',
     'invoices' => 'InvoiceController',
     'locales' => 'LocaleController',
     'prenotations' => 'PrenotationController',
     'pages' => 'PageController',
     'pagesc' => 'PageCController',
+    'paragraphs' => 'PageParagraphController',
+    'menu' => 'MenuController',
+    'menuv' => 'MenuVController'
 ]);
 
 Route::get('options', 'OptionController@index')->name('options.index');
@@ -45,9 +43,15 @@ Route::resources([
     'paginec' => 'PageCController',
 ]);
 
+Route::get('invoices/{invoice}/print','InvoiceController@getPrint')->name('invoices.print');
+
+Route::post('paragraphs/move/{id}', 'PageParagraphController@move')->name('paragraphs.move');
+Route::post('paragraphs/upload', 'PageParagraphController@upload')->name('paragraphs.upload');
 
 Route::get('prenotations/get-customer/{id}', 'PrenotationController@getCustomerData')->name('prenotations.customer-data');
-Route::get('prenotations/conferma-disp/{id}', 'PrenotationController@getInviaConfermaDisp')->name('prenotations.conferma-disp');
+Route::get('prenotations/{id}/conferma-disp', 'PrenotationController@getInviaConfermaDisp')->name('prenotations.conferma-disp');
+Route::get('prenotations/{id}/conferma-prenotazione', 'PrenotationController@getInviaConfermaPrenotazione')->name('prenotations.conferma-prenotazione');
+Route::post('prenotations/{prenotation}/conferma', 'PrenotationController@postInviaConferma')->name('prenotations.invia-conferma');
 Route::get('invoices/get-prenotation/{id}', 'InvoiceController@getPrenotationData')->name('invoices.prenotation-data');
 
 Route::post('pages/upload','PageController@upload')->name('pages.upload');

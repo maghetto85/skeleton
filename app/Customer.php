@@ -37,10 +37,15 @@ class Customer extends Model
     protected $table = 'clienti';
     protected $guarded = [];
     public $timestamps = false;
-    protected $appends = ['nome_cognome'];
+    protected $appends = ['nome_cognome','cognome_nome'];
 
     public function getNomeCognomeAttribute()
     {
         return ucfirst(trim($this->getAttribute('nome').' '.$this->getAttribute('cognome')));
+    }
+
+    public function getCognomeNomeAttribute()
+    {
+        return ucfirst(trim($this->getAttribute('cognome').' '.$this->getAttribute('nome')));
     }
 }

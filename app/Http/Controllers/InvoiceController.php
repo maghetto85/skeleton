@@ -6,6 +6,8 @@ use App\Customer;
 use App\Invoice;
 use App\InvoiceService;
 use App\Prenotation;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -146,5 +148,21 @@ class InvoiceController extends Controller
         }
 
         return back();
+    }
+
+    public function getPrint(Invoice $invoice)
+    {
+        $pdf = new \Dompdf\Dompdf();
+        $options = new Options();
+
+        $options->setIsHtml5ParserEnabled(true);
+        $options->setIsRemoteEnabled(true);
+
+        $pdf->loadHtml(view('pdf.invoice', ['invoice' => $invoice])->render());
+        $pdf->setOptions($options);
+        $pdf->setPaper('A4');
+        $pdf->render();
+
+        return response($pdf->output(),200,['content-type' => 'application/pdf']);
     }
 }

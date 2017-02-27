@@ -41,7 +41,7 @@
                                 <option value="0">-- Nessun Cliente --</option>
                                 <option value="-1"{{ old('idcliente') == 1 ? ' selected' :'' }}>-- Crea una nuova scheda --</option>
                                 @foreach(\App\Customer::orderBy('Nome')->get() as $customer)
-                                <option value="{{ $customer->id }}"{{ old('idcliente', $prenotation->idcliente) == $customer->id ? ' selected' : '' }}>{{ $customer->NomeCognome }}</option>
+                                <option value="{{ $customer->id }}"{{ old('idcliente', $prenotation->idcliente) == $customer->id ? ' selected' : '' }}>{{ $customer->CognomeNome }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -170,28 +170,17 @@
                         </div>
                     </div>
 
-
-                    <div class="form-group form-group-confirm clearfix">
-                        <div class="col-sm-8">
-
-                            <button class="btn btn-success" id="invia_conferma" type="button">Invia Conferma Disponibilità</button>
-
-                            <button class="btn btn-success" id="invia-camera-confermata" type="button">Invia E-Mail "Camera Confermata"
-                            </button>
-
-                            <div style="display: none" id="confirm">
-                                <p>Personalizza l'email di conferma da inviare. I campi speciali
-                                    (<strong>[campo]</strong>) verranno compilati automaticamente con i dati della
-                                    prenotazione</p>
-                                <p class="info"></p>
-                                <textarea id="confirm_body"></textarea>
-                                <button class="btn btn-default" id="confirm_invia" type="button">Invia Conferma</button>
-                                <button class="btn btn-default" type="button" id="confirm_annulla">Annulla</button>
-                                <button class="btn btn-default" type="button" data-href="http://halex.it/admin/opzioni/edit/4">Personalizza Modello</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+
+                @if($prenotation->exists)
+                    <div class="form-group form-group-confirm clearfix">
+                            <button class="btn btn-success" id="invia_conferma" type="button"{{ $prenotation->data_conferma_disp ? ' disabled' : '' }}>Invia Conferma Disponibilità
+                                @if($prenotation->data_conferma_disp) (Inviata il {{  $prenotation->data_conferma_disp->format('d/m/Y H:i') }}) @endif</button>
+                            <button class="btn btn-success" id="invia-camera-confermata" type="button"{{ $prenotation->data_conferma_prenotazione ? ' disabled' : '' }}>Invia E-Mail "Camera Confermata"
+                                @if($prenotation->data_conferma_prenotazione) (Inviata il {{  $prenotation->data_conferma_prenotazione->format('d/m/Y H:i') }}) @endif</button>
+                    </div>
+                @endif
+
 
                 <div class="form-group">
                     <button class="btn btn-primary">Salva</button>
@@ -199,7 +188,31 @@
                 </div>
             </div>
         </div>
-        @if($prenotation->exists())
+        @if($prenotation->exists)
+
+        <div class="panel panel-default" id="conferma" style="display: none;">
+            <div class="panel-heading"><h3 class="panel-title">Conferma Disponibilità/Conferma Prenotazione</h3></div>
+            <div class="panel-body">
+                <form action>
+                    <div class="form-group form-group-sm">
+                        <label for="subject" class="control-label">Oggetto:</label>
+                        <input type="text" name="subject" id="subject" class="form-control">
+                        <input type="hidden" name="type" id="type">
+                    </div>
+                    <div class="form-group from-group-sm">
+                        <label for="message" class="control-label">Contenuto del Messaggio:</label>
+                        <textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
+                    </div>
+
+                    <div class="form-group">
+
+                        <button class="btn btn-primary" id="inviaConferma">Invia Conferma</button>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
 
         <div class="panel panel-default">
             <div class="panel-heading"><h3 class="panel-title">Dati Pagamento</h3></div>
@@ -344,7 +357,24 @@
 
 @section('bottom')
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/tinymce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/jquery.tinymce.min.js"></script>
+
     <script>
+
+        tinymce.init({
+            selector: 'textarea#message',
+            height: 250,
+            theme: 'modern',
+            //language_url: 'it',
+            plugins: [
+                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc'
+            ],
+            menubar: false
+        });
 
         $(function() {
 
@@ -402,19 +432,61 @@
                 $('#totale_prenotazione').change();
 
             }).change();
+
             $('button#invia_conferma').click(function(e) {
                 e.preventDefault();
 
-                var $modal = $('div#modal-id');
+                var $conferma = $('div#conferma');
 
-                $modal.find('.modal-title').text('Invia Conferma Disponibilità');
+                $.getJSON('{{ route('prenotations.conferma-disp', $prenotation->id) }}').done(function(data) {
 
-                $.get('{{ route('prenotations.conferma-disp', $prenotation->id) }}').done(function(data) {
-                    $modal.find('.modal-body').html(data);
+                    $conferma.show();
+                    $conferma.find('#type').val('data_conferma_disp');
+                    $conferma.find('.panel-title').text('Invia Conferma Disponibilità');
+                    $conferma.find('#subject').val(data.subject);
+                    $conferma.find('textarea').tinymce().setContent(data.html);
+
+                });
+            });
+
+            $('button#invia-camera-confermata').click(function(e) {
+                e.preventDefault();
+
+                var $conferma = $('div#conferma');
+
+                $.getJSON('{{ route('prenotations.conferma-prenotazione', $prenotation->id) }}').done(function(data) {
+
+                    $conferma.show();
+                    $conferma.find('#type').val('data_conferma_prenotazione');
+                    $conferma.find('.panel-title').text('Invia Conferma Prenotazione');
+                    $conferma.find('#subject').val(data.subject);
+                    $conferma.find('textarea').tinymce().setContent(data.html);
+
                 });
 
-                $modal.modal();
-            })
+             });
+
+            $('button#inviaConferma').click(function(e) {
+
+                e.preventDefault();
+
+                var $conferma = $('div#conferma'), data = {};
+
+                $conferma.find('input').each(function(id, input) {
+                    data[$(input).attr('name')] = $(input).val();
+                });
+
+                data['message'] = $conferma.find('textarea').tinymce().getContent();
+
+                $.post('{{ route('prenotations.invia-conferma', $prenotation->id) }}', data, function(response) {
+
+                    $conferma.hide();
+
+                });
+
+
+            });
+
         })
 
     </script>

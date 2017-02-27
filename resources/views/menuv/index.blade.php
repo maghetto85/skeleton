@@ -1,39 +1,45 @@
-<?php /** @var App\Prenotation $invoice */ ?>
 @extends('layouts.app')
-@section('page.title','Fatture')
+@section('page.title','Menu Verticale')
 @section('page.navbar')
     @if(request('filtered'))
-        <li><a href="{{ URL::current() }}"><i class="fa fa-chevron-left fa-fw"></i> Lista Fatture</a></li>
+        <li><a href="{{ URL::current() }}"><i class="fa fa-chevron-left fa-fw"></i> Menu Verticale</a></li>
     @endif
 @endsection
 @section('content')
 <div class="container">
 
-    <div style="margin-bottom: 20px; overflow: hidden;">
-        <div class="pull-left" style="margin-bottom: 10px;">
-            <a href="{{ route('invoices.create') }}" class="btn btn-primary btn-sm">Nuova Fattura</a>
-        </div>
+     <div style="margin-bottom: 20px;">
         <div class="pull-right">
-            <form class="form-inline" method="get">
+            <form class="form-inline">
                 <div class="form-group form-group-sm">
-                    <label class="visible-xs visible-sm control-label">Cerca:</label>
+
+                    <select name="lang" id="lang" class="form-control selectpicker" title="Lingua">
+                        <option value="">Tutte</option>
+                        @foreach(\App\Locale::orderBy('name')->get() as $locale)
+                            <option data-content="<img src=&quot;{{ $locale->flag}}&quot; alt=&quot;&quot; style=&quot;height: 16px; vertical-align: middle;&quot;> {{ $locale->name}}  " value="{{ $locale->code }}"{{ $locale->code == request('lang') ? ' selected' : '' }}>{{ $locale->name }}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+                <div class="form-group form-group-sm">
                     <div class="input-group input-group-sm">
                         <input type="text" name="q" id="q" class="form-control" placeholder="Cerca" value="{{ request('q') }}">
                         <span class="input-group-btn">
                             <button class="btn btn-default"><i class="fa fa-search"></i></button>
                             @if(request('filtered'))
-                                <a href="{{ URL::current() }}" class="btn btn-danger"><i class="fa fa-times"></i></a>
+                            <a href="{{ URL::current() }}" class="btn btn-danger"><i class="fa fa-times"></i></a>
                             @endif
                         </span>
                     </div>
                 </div>
             </form>
         </div>
+        <a href="{{ route('menu.create') }}" class="btn btn-primary btn-sm">Nuovo Elemento</a>
     </div>
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">{{ $invoices->total() }} @yield('page.title') @if(request('filtered')) Trovate @endif - Pagina {{ $invoices->currentPage() }} di {{ $invoices->lastPage() }}</h3>
+            <h3 class="panel-title">@yield('page.title')</h3>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-condensed">
@@ -41,37 +47,35 @@
                 <tr>
                     <th style="width: 24px;"></th>
                     <th style="width: 24px;"></th>
-                    <th style="width: 24px;"></th>
-                    <th>Nr.</th>
-                    <th>Data</th>
-                    <th>Cliente</th>
-                    <th class="text-right">Prezzo</th>
-                    <th class="text-right">ID</th>
+                    <th>Lingua</th>
+                    <th>Titolo</th>
+                    <th>Destinazione</th>
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($invoices as $invoice)
-                <tr>
-                    <td class="text-center success"><a class="btn btn-xs btn-success" href="{{ route('invoices.edit', $invoice->id) }}"><i class="fa fa-fw fa-pencil"></i></a></td>
-                    <td class="text-center warning"><a class="btn btn-xs btn-warning" href="{{ route('invoices.print', $invoice->id) }}"><i class="fa fa-fw fa-print"></i></a></td>
-                    <td class="text-center danger"><a class="btn btn-xs btn-danger" href="#elimina" data-toggle="modal" data-id="{{ $invoice->id }}" data-name="{{ $invoice->titolo }}"><i class="fa fa-fw fa-remove"></i></a></td>
-                    <td>{{ $invoice->numero }} / {{ $invoice->data->format('Y') }}</td>
-                    <td>{{ $invoice->data->format('d/m/Y') }}</td>
-                    <td>{{ $invoice->Nome }}</td>
-                    <td class="text-right">{{ number_format($invoice->totalefattura,2,',','.') }} &euro;</td>
-                    <th class="text-right">{{ $invoice->id }}</th>
-                </tr>
+                @forelse($menus as $menu)
+                    <tr>
+                        <td class="text-center success">
+                            <a href="{{ route('menuv.edit', $menu->id) }}"><i class="fa fa-fw fa-pencil"></i></a>
+                        </td>
+                        <td class="text-center danger">
+                            <a href="#elimina" data-toggle="modal" data-id="{{ $menu->id }}" data-name="{{ $menu->titolo }}"><i class="fa fa-fw fa-remove"></i></a>
+                        </td>
+                        <td><img src="{{ $menu->locale->flag }}" style="height: 16px;" alt="{{ $menu->locale->name }}"></td>
+                        <td>{{ $menu->titolo }}</td>
+                        <td>{{ $menu->url }}</td>
+                    </tr>
                 @empty
-                <tr>
-                    <td class="text-center" colspan="12">Nessuna Fattura Trovata</td>
-                </tr>
+                    <tr>
+                        <td class="text-center" colspan="10">Nessun Elemento trovato</td>
+                    </tr>
                 @endforelse
                 </tbody>
             </table>
         </div>
     </div>
 
-    {{ $invoices->render() }}
+    {{ $menus->render() }}
 
     <div class="modal fade" id="elimina">
         <form action="" method="post">
@@ -108,7 +112,7 @@
             var button = $(event.relatedTarget) // Button that triggered the modal
             var id = button.data('id'), nome = button.data('name');
             var modal = $(this)
-            modal.find('form').attr('action','{{ route('invoices.destroy',null) }}/'+id);
+            modal.find('form').attr('action','{{ route('menu.destroy',null) }}/'+id);
             modal.find('.modal-body #modal-name').text(nome);
         })
 

@@ -56,4 +56,11 @@ class Invoice extends Model
     {
         return $this->belongsTo(Prenotation::class, 'idprenotazione');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'idcliente');
+    }
 }
+
+
