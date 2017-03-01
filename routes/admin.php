@@ -68,3 +68,8 @@ Route::post('fotohome','HomeFotoController@save')->name('fotohome.save');
 
 Route::get('/', 'HomeController@index');
 
+Route::get('prova', function() {
+
+
+
+});
