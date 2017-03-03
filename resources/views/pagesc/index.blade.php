@@ -12,10 +12,10 @@
         <div class="pull-right">
             <form class="form-inline">
                 <div class="form-group form-group-sm">
-                    <select name="lang" id="lang" class="form-control" title="Lingua">
+                    <select name="lang" id="lang" class="form-control selectpicker" title="Lingua">
                         <option value="">Tutte</option>
                         @foreach(\App\Locale::orderBy('name')->get() as $locale)
-                        <option value="{{ $locale->code }}"{{ $locale->code == request('lang') ? ' selected' : '' }}>{{ $locale->name }}</option>
+                            <option data-content="<img src=&quot;{{ $locale->flag}}&quot; alt=&quot;&quot; style=&quot;height: 16px; vertical-align: middle;&quot;> {{ $locale->name}}  " value="{{ $locale->code }}"{{ $locale->code == request('lang') ? ' selected' : '' }}>{{ $locale->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -54,10 +54,10 @@
                 @forelse($pages as $page)
                 <tr>
                     <td class="text-center success">
-                        <a href="{{ route('pagesc.edit', $page->id) }}"><i class="fa fa-fw fa-pencil"></i></a>
+                        <a class="btn btn-xs btn-success" href="{{ route('pagesc.edit', $page->id) }}"><i class="fa fa-fw fa-pencil"></i></a>
                     </td>
                     <td class="text-center danger">
-                        <a href="#elimina" data-toggle="modal" data-id="{{ $page->id }}" data-name="{{ $page->titolo }}"><i class="fa fa-fw fa-remove"></i></a>
+                        <a class="btn btn-xs btn-danger" href="#elimina" data-toggle="modal" data-id="{{ $page->id }}" data-name="{{ $page->titolo }}"><i class="fa fa-fw fa-remove"></i></a>
                     </td>
                     <td><img src="{{ $page->locale->flag }}" style="height: 16px;" alt="{{ $page->locale->name }}"></td>
                     <td>{{ $page->titolo }}</td>

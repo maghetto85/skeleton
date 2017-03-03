@@ -42,6 +42,7 @@ Route::resources([
     'prenotazioni' => 'PrenotationController',
     'pagine' => 'PageController',
     'ospiti' => 'GuestController',
+    'homebanner' => 'HomeBannerController',
     'paginec' => 'PageCController',
 ]);
 

@@ -40,7 +40,7 @@
                             <select name="idcliente" id="idcliente" class="form-control">
                                 <option value="0">-- Nessun Cliente --</option>
                                 <option value="-1"{{ old('idcliente') == 1 ? ' selected' :'' }}>-- Crea una nuova scheda --</option>
-                                @foreach(\App\Customer::orderBy('Nome')->get() as $customer)
+                                @foreach(\App\Customer::orderBy('Cognome')->orderBy('Nome')->get() as $customer)
                                 <option value="{{ $customer->id }}"{{ old('idcliente', $prenotation->idcliente) == $customer->id ? ' selected' : '' }}>{{ $customer->CognomeNome }}</option>
                                 @endforeach
                             </select>
