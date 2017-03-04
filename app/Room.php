@@ -37,7 +37,9 @@ class Room extends Model
 
     public function locales()
     {
-        return $this->belongsToMany(Locale::class, "camera_locale", "camera_id");
+        return $this->belongsToMany(Locale::class, "camera_locale", "camera_id")
+            ->withPivot('description')
+            ->withTimestamps();
     }
 
 }

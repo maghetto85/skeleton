@@ -92,7 +92,17 @@ class RoomController extends Controller
             'descrizione_en' => "required|string",
         ]);
 
-        $room = Room::query()->updateOrCreate(['id' => $id], $request->all());
+        $langs = [];
+        foreach(\App\Locale::all(['id','code']) as $locale) {
+            $description = array_get($request->get("{$locale->code}",[]), 'descrizione');
+
+            if($description) {
+                $langs[$locale->id] = ['description' => $description];
+            }
+        }
+
+        $room = Room::query()->updateOrCreate(['id' => $id], $request->only('titolo','descrizione','descrizione_en'));
+        $room->locales()->sync($langs, true);
 
         if($room->wasRecentlyCreated) {
             return redirect()->action('RoomController@edit', $room->id);

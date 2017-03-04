@@ -39,10 +39,10 @@
                 @forelse($rooms as $room)
                 <tr>
                     <td class="text-center success">
-                        <a href="{{ route('rooms.edit', $room->id) }}"><i class="fa fa-fw fa-pencil"></i></a>
+                        <a class="btn btn-xs btn-success" href="{{ route('rooms.edit', $room->id) }}"><i class="fa fa-fw fa-pencil"></i></a>
                     </td>
                     <td class="text-center danger">
-                        <a href="#elimina" data-toggle="modal" data-id="{{ $room->id }}" data-name="{{ $room->titolo }}"><i class="fa fa-fw fa-remove"></i></a>
+                        <a class="btn btn-xs btn-danger" href="#elimina" data-toggle="modal" data-id="{{ $room->id }}" data-name="{{ $room->titolo }}"><i class="fa fa-fw fa-remove"></i></a>
                     </td>
                     <td>{{ $room->titolo }}</td>
                 </tr>

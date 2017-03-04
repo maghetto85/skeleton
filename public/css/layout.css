@@ -10,3 +10,10 @@
 .daconfermareweb {
     background-color: #a2d246;
 }
+
+.tab-content {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-top: 0;
+    background-color: #f5f8fa;
+}

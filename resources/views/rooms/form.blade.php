@@ -1,5 +1,8 @@
 @extends('layouts.app')
-@section('page.title','Camere')
+@section('page.title',$room->exists ? $room->titolo : 'Nuova Camera')
+@section('page.navbar')
+    <li><a href="{{ route('rooms.index') }}"><i class="fa fa-chevron-left fa-fw"></i> Lista Camere</a></li>
+@endsection
 @section('head')
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plupload/2.2.1/jquery.plupload.queue/css/jquery.plupload.queue.css" />
@@ -71,6 +74,39 @@
                         </p>
                     @endif
                 </div>
+
+                <ul class="nav nav-tabs">
+                @foreach($locales = \App\Locale::orderBy('name')->get() as $locale)
+                    <li class="{{ $loop->first ? 'active': ''  }}">
+                        <a href="#{{ $locale->code }}" data-toggle="tab">
+                            <img src="{{ $locale->flag}}" alt="" style="height: 16px; vertical-align: middle;">
+                            {{ $locale->name }}
+                        </a>
+                    </li>
+                @endforeach
+                </ul>
+
+                <div class="tab-content">
+                    @foreach($locales as $locale)
+                    <div class="tab-pane fade{{ $loop->first ? ' active in' : '' }}" id="{{ $locale->code }}">
+                        <div class="panel-body">
+
+                            <div class="form-group form-group-sm{{ $errors->has("{$locale->code}.descrizione") ? ' has-error' : '' }}">
+                                <label for="descrizione" class="control-label">Descrizione:</label>
+                                <textarea id="{{ $locale->code }}[descrizione]" name="{{ $locale->code }}[descrizione]" class="form-control">{{ old("{$locale->code}.descrizione", ($lc = $room->locales()->find($locale->id)) ? $lc->pivot->description : '') }}</textarea>
+                                @if($errors->has("{$locale->code}.descrizione"))
+                                    <p class="help-block">
+                                        {{ $errors->first("{$locale->code}.descrizione") }}
+                                    </p>
+                                @endif
+                            </div>
+
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+
 
                 <div class="form-group">
                     <button class="btn btn-primary">Salva</button>
