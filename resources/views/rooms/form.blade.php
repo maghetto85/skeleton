@@ -224,7 +224,7 @@
 
                 uploadComplete: function(uploader, files) {
 
-                    location.reload();
+                    //location.reload();
 
                 }
             }

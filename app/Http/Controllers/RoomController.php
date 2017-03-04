@@ -58,10 +58,14 @@ class RoomController extends Controller
         $room = Room::find($id);
 
         if(!$room)
-            return ['errore' => 'Foto non valida'];
+            return ['errore' => 'Camera non valida'];
 
         if(!$file->isValid())
             return ['errore' => 'Foto non valida'];
+
+
+        dd($file);
+
 
         $ext = '.'.$file->getClientOriginalExtension();
         $name = str_replace($ext, '', $file->getClientOriginalName());
