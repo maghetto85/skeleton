@@ -7,6 +7,38 @@
 <div class="container">
 
 
+    <form class="form-inline" style="margin-bottom: 20px;">
+        <div class="form-group form-group-sm">
+
+            <select name="lang" id="lang" class="form-control selectpicker" title="Lingua">
+                <option value="">Tutte</option>
+                @foreach(\App\Locale::orderBy('name')->get() as $locale)
+                    <option data-content="<img src=&quot;{{ $locale->flag}}&quot; alt=&quot;&quot; style=&quot;height: 16px; vertical-align: middle;&quot;> {{ $locale->name}}  " value="{{ $locale->code }}"{{ $locale->code == request('lang') ? ' selected' : '' }}>{{ $locale->name }}</option>
+                @endforeach
+            </select>
+
+        </div>
+        <div class="form-group form-group-sm">
+            <button class="btn btn-sm btn-default">Cambia Lingua</button>
+        </div>
+    </form>
+
+    @if(!$homefoto->count())
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Foto Home non configurate</h3></div>
+            <div class="panel-body">
+                <form action="{{route('fotohome.generate', request('lang'))}}" method="post">
+                    {{csrf_field()}}
+                    <h4>Per questa lingua non sono state ancora configurate le foto in home!</h4>
+                    <button class="btn btn-primary">Duplica dalla lingua predefinita</button>
+                    <a href="{{ url('/') }}" class="btn btn-link">Torna Indietro</a>
+                </form>
+            </div>
+        </div>
+
+    @endif
+
     @foreach($homefoto as $foto)
 
     <div class="panel panel-default">
@@ -80,7 +112,7 @@
 
 
                 var uploader = new plupload.Uploader({
-                    browse_button: $pulsante.attr('id'),
+                    browse_button: $pulsante[0],
                     url: '{{ route('fotohome.upload') }}',
                     multipart_params: {
                         id: $pulsante.attr('id'),

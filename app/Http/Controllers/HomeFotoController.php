@@ -16,10 +16,34 @@ class HomeFotoController extends Controller
 
     public function index()
     {
-        $homefoto = HomeFoto::all();
+        $homefoto = HomeFoto::query();
+
+        if($lang = request('lang', session('homefoto.lang','it'))) {
+
+            request()->merge(['lang' => $lang]);
+            \Session::put('homefoto.lang', $lang);
+
+            $homefoto->whereLang($lang);
+
+        }
+        $homefoto = $homefoto->get();
 
         return view('homefoto', compact('homefoto'));
     }
+
+    public function generate(\App\Locale $locale)
+    {
+        $homefoto = HomeFoto::whereLang('it')->get();
+        foreach($homefoto as $hf) {
+            $hf->id = null;
+            $hf->exists = false;
+            $hf->locale()->associate($locale);
+            $hf->save();
+        }
+
+        return redirect()->route('fotohome');
+    }
+
 
     public function upload(Request $request)
     {
@@ -36,22 +60,9 @@ class HomeFotoController extends Controller
             return ['errore' => 'Foto non valida'];
 
 
-        $ext = '.'.$file->getClientOriginalExtension();
-        $name = str_replace($ext, '', $file->getClientOriginalName());
-
-        $prefix = '';
-        $i = 0;
-        while(\File::exists(app_path('../../httpdocs/uploads/home/'.($fname = $name.$prefix.$ext)))) {
-            $i++;
-            $prefix = "[$i]";
-        }
-
-        $file->move(app_path('../../httpdocs/uploads/home/'), $fname);
-        $url = '/uploads/home/'.$fname;
+        $url ='/'.$file->storePublicly('uploads/home', 'halex');
 
         $homefoto->update(['url' => $url]);
-        $homefoto->url = $url;
-
         return $homefoto;
     }
 

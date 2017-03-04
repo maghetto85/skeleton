@@ -34,4 +34,10 @@ class Room extends Model
     {
         return $this->hasMany(FotoRoom::class, 'idcamera');
     }
+
+    public function locales()
+    {
+        return $this->belongsToMany(Locale::class, "camera_locale", "camera_id");
+    }
+
 }

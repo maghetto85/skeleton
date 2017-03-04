@@ -28,9 +28,12 @@
         <div class="panel panel-default">
             <div class="panel-heading"><h3 class="panel-title">Banner non configurato</h3></div>
             <div class="panel-body">
+                <form action="{{route('homebanner.generate', request('lang'))}}" method="post">
+                    {{csrf_field()}}
                 <h4>Per questa lingua non è stato ancora configurato alcun banner!</h4>
-                <a href="#" class="btn btn-primary">Crea un banner dalla lingua predefinita</a>
+                <button class="btn btn-primary">Crea un banner dalla lingua predefinita</button>
                 <a href="{{ url('/') }}" class="btn btn-link">Torna Indietro</a>
+                </form>
             </div>
         </div>
 
@@ -39,18 +42,21 @@
         <div class="panel panel-default">
             <div class="panel-heading">Banner in Home - {{ $homebanner->locale->name }}</div>
             <div class="panel-body">
-                <div class="row">
+                <form class="update-form" action="{{ route('homebanner.update', $homebanner->id) }}" method="post">
+                    {{ method_field('PUT') }}
+                    <input type="hidden" name="id" id="id" value="{{ $homebanner->id }}">
+                <div class="row" data-id="{{ $homebanner->id }}">
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <button class="btn btn-primary">Cambia Immagine</button>
+                            <button type="button" class="btn btn-primary cambia-immagine" data-field="foto1">Cambia Immagine</button>
                         </div>
-                        <img src="http://www.halex.it{{ $homebanner->foto1 }}" alt="" class="img-thumbnail" style="max-width: 100%; margin-bottom: 20px; max-height: 250px;">
+                        <img id="foto1" src="http://www.halex.it{{ $homebanner->foto1 }}" alt="" class="img-thumbnail" style="max-width: 100%; margin-bottom: 20px; max-height: 250px;">
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <button class="btn btn-primary">Cambia Immagine</button>
+                            <button type="button" data-field="foto2" class="btn btn-primary cambia-immagine">Cambia Immagine</button>
                         </div>
-                        <img src="http://www.halex.it{{ $homebanner->foto2 }}" alt="" class="img-thumbnail" style="max-width: 100%; margin-bottom: 20px; max-height: 250px;">
+                        <img id="foto2" src="http://www.halex.it{{ $homebanner->foto2 }}" alt="" class="img-thumbnail" style="max-width: 100%; margin-bottom: 20px; max-height: 250px;">
                     </div>
                     <div class="col-sm-5">
                         <div class="form-group form-group-sm">
@@ -64,12 +70,12 @@
                         </div>
 
                         <div class="form-group form-group-sm">
-                            <button class="btn btn-primary">Salva</button>
+                            <button class="btn btn-primary btn-save">Salva</button>
                             <a href="{{ url('/') }}" class="btn btn-link">Torna Indietro</a>
                         </div>
                     </div>
                 </div>
-
+                </form>
             </div>
         </div>
 
@@ -143,16 +149,21 @@
     <script>
 
         $(function() {
-            $('button.cambia-immagine').each(function() {
+            $('button.cambia-immagine').each(function(e) {
 
-                var $pulsante = $(this);
-
+                var
+                    $pulsante = $(this),
+                    $form = $pulsante.parents('form').first(),
+                    id = $form.find('input#id').val(),
+                    field = $pulsante.attr('data-field'),
+                    $image = $form.find('img#'+field);
 
                 var uploader = new plupload.Uploader({
-                    browse_button: $pulsante.attr('id'),
-                    url: '{{ route('fotohome.upload') }}',
+                    browse_button: $pulsante[0],
+                    url: '{{ route('homebanner.upload') }}',
                     multipart_params: {
-                        id: $pulsante.attr('id'),
+                        id: id,
+                        field: field,
                         _token: Laravel.csrfToken
                     }
                 });
@@ -170,17 +181,31 @@
 
                 uploader.bind('fileUploaded', function(uploader, file, response) {
 
-                    var homefoto = JSON.parse(response.response);
+                    var homebanner = JSON.parse(response.response);
 
-                    var $box = $('.panel-body[data-foto='+homefoto.id+']');
-                    $box.find('img').attr('src','http://www.halex.it'+homefoto.url);
-
+                    $image.attr('src','http://www.halex.it'+homebanner.url);
                     $pulsante.prop('disabled',false).text('Cambia Immagine');
                 })
 
+            });
+
+            $('form.update-form').submit(function(e) {
+                e.preventDefault();
+                var $form = $(this), data = $form.serializeArray();
+
+                $.post($form.attr('action'), data, function(response) {
+
+                    var $message = "<div class=\"alert alert-success alert-dismissable\"><strong>Salvataggio Eseguito!</strong></div>";
+
+                    $form.parents('.panel').before($message);
+
+                }).fail(function() {
+
+                });
 
             });
-            $('button.salva-modifiche').on('click',function(e) {
+
+            $('forum').on('click',function(e) {
                 e.preventDefault();
                 var $pulsante = $(this);
 
@@ -200,10 +225,12 @@
 
                 data.push({
                     name: 'id',
-                    value: $pulsante.parents('.panel-body').attr('data-foto')
+                    value: $pulsante.parents('.panel-body').attr('data-id')
                 });
 
-                $.post('{{ route('fotohome.save') }}', data);
+                console.log(data);
+
+               // $.post('{{ route('fotohome.save') }}', data);
 
             })
         })

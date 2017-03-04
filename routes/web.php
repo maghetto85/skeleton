@@ -35,6 +35,9 @@ Route::get('options', 'OptionController@index')->name('options.index');
 Route::post('options', 'OptionController@save')->name('options.save');
 Route::get('opzioni', 'OptionController@index')->name('options.index');
 
+Route::post('homebanner/generate/{locale}', 'HomeBannerController@generate')->name('homebanner.generate');
+Route::post('homebanner/upload', 'HomeBannerController@upload')->name('homebanner.upload');
+
 //TODO:: Rimuovere dopo,
 Route::resources([
     'camere' => 'RoomController',
@@ -66,6 +69,7 @@ Route::post('rooms/upload','RoomController@upload')->name('rooms.upload');
 Route::get('fotohome','HomeFotoController@index')->name('fotohome');
 Route::post('fotohome/upload','HomeFotoController@upload')->name('fotohome.upload');
 Route::post('fotohome','HomeFotoController@save')->name('fotohome.save');
+Route::post('fotohome/generate/{locale}', 'HomeFotoController@generate')->name('fotohome.generate');
 
 Route::get('/', 'HomeController@index');
 

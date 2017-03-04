@@ -25,6 +25,12 @@ class Locale extends Model
     protected $guarded = [];
     protected $appends = ['flag'];
 
+    public function getRouteKeyName()
+    {
+        return 'code';
+    }
+
+
     public function getFlagAttribute()
     {
         $code = $this->getAttribute('code');

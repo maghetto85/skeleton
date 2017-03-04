@@ -27,4 +27,8 @@ class HomeFoto extends Model
     protected $guarded = [];
     public $timestamps = false;
 
+    public function locale()
+    {
+        return $this->belongsTo(Locale::class, 'lang','code');
+    }
 }
