@@ -32,6 +32,7 @@
                 <tr>
                     <th style="width: 24px;"></th>
                     <th style="width: 24px;"></th>
+                    <th style="width: 24px;"></th>
                     <th>Nome</th>
                     <th>Codice</th>
                     <th>Bandiera</th>
@@ -41,10 +42,13 @@
                 @forelse($locales as $locale)
                 <tr>
                     <td class="text-center success">
-                        <a href="{{ route('locales.edit', $locale->id) }}"><i class="fa fa-fw fa-pencil"></i></a>
+                        <a class="btn btn-xs btn-success" href="{{ route('locales.edit', $locale->id) }}"><i class="fa fa-fw fa-pencil"></i></a>
+                    </td>
+                    <td class="text-center warning">
+                        <a class="btn btn-xs btn-default" href="{{ route('locales.translation', $locale->code) }}"><i class="fa fa-fw fa-file-code-o"></i></a>
                     </td>
                     <td class="text-center danger">
-                        <a href="#elimina" data-toggle="modal" data-id="{{ $locale->id }}" data-name="{{ $locale->name }}"><i class="fa fa-fw fa-remove"></i></a>
+                        <a class="btn btn-xs btn-danger" href="#elimina" data-toggle="modal" data-id="{{ $locale->id }}" data-name="{{ $locale->name }}"><i class="fa fa-fw fa-remove"></i></a>
                     </td>
                     <td>{{ $locale->name }}</td>
                     <td>{{ $locale->code }}</td>

@@ -75,4 +75,26 @@ class LocaleController extends Controller
         return back();
     }
 
+    public function translation(Locale $locale)
+    {
+        $file = resource_path("lang/{$locale->code}.json");
+
+        if(!\File::exists($file)) \File::put($file,'{}');
+        $data = json_decode(\File::get($file));
+
+        return view('locales.translation', compact('locale','data'));
+    }
+
+    public function saveTranslation(Locale $locale)
+    {
+        $file = resource_path("lang/{$locale->code}.json");
+        $data = request()->all();
+        unset($data['_token']);
+
+        \File::put($file, json_encode($data));
+
+        return redirect()->route('locales.index');
+
+    }
+
 }

@@ -35,6 +35,12 @@ Route::get('options', 'OptionController@index')->name('options.index');
 Route::post('options', 'OptionController@save')->name('options.save');
 Route::get('opzioni', 'OptionController@index')->name('options.index');
 
+Route::get('locales/{locale}/translation','LocaleController@translation')->name('locales.translation');
+Route::post('locales/{locale}/translation','LocaleController@saveTranslation');
+
+Route::post('homebanner/generate/{locale}', 'HomeBannerController@generate')->name('homebanner.generate');
+Route::post('homebanner/upload', 'HomeBannerController@upload')->name('homebanner.upload');
+
 //TODO:: Rimuovere dopo,
 Route::resources([
     'camere' => 'RoomController',
@@ -42,6 +48,7 @@ Route::resources([
     'prenotazioni' => 'PrenotationController',
     'pagine' => 'PageController',
     'ospiti' => 'GuestController',
+    'homebanner' => 'HomeBannerController',
     'paginec' => 'PageCController',
 ]);
 
@@ -65,11 +72,7 @@ Route::post('rooms/upload','RoomController@upload')->name('rooms.upload');
 Route::get('fotohome','HomeFotoController@index')->name('fotohome');
 Route::post('fotohome/upload','HomeFotoController@upload')->name('fotohome.upload');
 Route::post('fotohome','HomeFotoController@save')->name('fotohome.save');
+Route::post('fotohome/generate/{locale}', 'HomeFotoController@generate')->name('fotohome.generate');
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@admin');
 
-Route::get('prova', function() {
-
-
-
-});

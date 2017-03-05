@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $link_en
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Locale $locale
  * @method static \Illuminate\Database\Query\Builder|\App\HomeBanner whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\HomeBanner whereFoto1($value)
  * @method static \Illuminate\Database\Query\Builder|\App\HomeBanner whereFoto2($value)

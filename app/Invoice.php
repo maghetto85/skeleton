@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $Provincia
  * @property string $PartitaIva
  * @property string $CodiceFiscale
+ * @property-read \App\Customer $customer
  * @property-read \App\Prenotation $prenotation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\InvoiceService[] $services
  * @method static \Illuminate\Database\Query\Builder|\App\Invoice whereCap($value)

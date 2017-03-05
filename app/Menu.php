@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $url
  * @property int $parent
  * @property bool $position
+ * @property-read \App\Locale $locale
  * @property-read \App\Menu $parentmenu
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Menu[] $submenus
  * @method static \Illuminate\Database\Query\Builder|\App\Menu whereId($value)

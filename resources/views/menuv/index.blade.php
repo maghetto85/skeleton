@@ -34,7 +34,7 @@
                 </div>
             </form>
         </div>
-        <a href="{{ route('menu.create') }}" class="btn btn-primary btn-sm">Nuovo Elemento</a>
+        <a href="{{ route('menuv.create') }}" class="btn btn-primary btn-sm">Nuovo Elemento</a>
     </div>
 
     <div class="panel panel-default">
@@ -112,7 +112,7 @@
             var button = $(event.relatedTarget) // Button that triggered the modal
             var id = button.data('id'), nome = button.data('name');
             var modal = $(this)
-            modal.find('form').attr('action','{{ route('menu.destroy',null) }}/'+id);
+            modal.find('form').attr('action','{{ route('menuv.destroy',null) }}/'+id);
             modal.find('.modal-body #modal-name').text(nome);
         })
 

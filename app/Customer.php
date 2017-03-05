@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $partitaiva
  * @property string $telefono
  * @property string $email
+ * @property-read mixed $cognome_nome
  * @property-read mixed $nome_cognome
  * @method static \Illuminate\Database\Query\Builder|\App\Customer whereCap($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Customer whereCitta($value)

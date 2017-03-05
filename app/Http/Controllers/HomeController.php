@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\AdminMenu;
+use App\HomeBanner;
+use App\HomeFoto;
+use App\Locale;
+use App\MenuV;
 use App\Room;
 use Illuminate\Http\Request;
 
@@ -15,7 +19,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->only('admin');
     }
 
     /**
@@ -23,7 +27,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function admin()
     {
 
         $menu = AdminMenu::whereVisibile(1)->orderBy('posizione')->get();
@@ -41,5 +45,25 @@ class HomeController extends Controller
         }])->orderBy('titolo')->get();
 
         return view('home', compact('menu','rooms','month','year','monthdays'));
+    }
+
+    public function index()
+    {
+        /** @var Locale $locale */
+        $locale = app('locale');
+
+        $homefoto = $locale->homefoto();
+        $homefoto = $homefoto->count() ? $homefoto->get() : HomeFoto::whereLang('it')->get();
+        
+        $homebanner = $locale->homebanner();
+        $homebanner = $homebanner->count() ? $homebanner->first() : HomeBanner::whereLang('it')->first();
+
+        $menuv = $locale->menuv();
+        $menuv = $menuv->count() ? $menuv->get() : MenuV::whereLang('it')->get();
+        
+        $rooms = Room::whereHas('pics')->inRandomOrder()->limit(3)->get();
+
+        return view('homepage', compact('homefoto','menuv','homebanner','rooms'));
+
     }
 }

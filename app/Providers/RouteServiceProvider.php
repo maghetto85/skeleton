@@ -35,12 +35,32 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
+        $this->mapAdminRoutes();
         $this->mapApiRoutes();
-
         $this->mapWebRoutes();
 
         //
         
+    }
+
+    protected function mapAdminRoutes()
+    {
+        Route::group([
+            'middleware' => 'web',
+            'domain' => 'admin.homestead.app',
+            'namespace' => $this->namespace,
+        ], function ($router) {
+            require base_path('routes/admin.php');
+        });
+
+        Route::group([
+            'middleware' => 'web',
+            'domain' => 'admin.homestead.app',
+            'prefix' => 'admin',
+            'namespace' => $this->namespace,
+        ], function ($router) {
+            require base_path('routes/admin.php');
+        });
     }
 
     /**
@@ -52,20 +72,22 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::group([
-            'middleware' => 'web',
-            'namespace' => $this->namespace,
-        ], function ($router) {
-            require base_path('routes/web.php');
-        });
 
-        Route::group([
-            'prefix' => 'admin',
-            'middleware' => 'web',
-            'namespace' => $this->namespace,
-        ], function ($router) {
-            require base_path('routes/web.php');
-        });
+        $locales = array_merge(\Cache::rememberForever('locales', function() {
+            return \App\Locale::pluck('code')->toArray();
+        }),['']);
+
+        foreach($locales as $locale) {
+
+            Route::group([
+                'middleware' => ['web','locale'],
+                'prefix' => $locale,
+                'namespace' => $this->namespace,
+            ], function ($router) use($locale) {
+                require base_path('routes/web.php');
+            });
+        }
+
     }
 
     /**

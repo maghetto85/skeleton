@@ -90,7 +90,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'it',
 
     /*
     |--------------------------------------------------------------------------
@@ -169,6 +169,7 @@ return [
 
         Bestmomo\NiceArtisan\NiceArtisanServiceProvider::class,
         \Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        \Laravel\Tinker\TinkerServiceProvider::class,
 
         /*
          * Application Service Providers...

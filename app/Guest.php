@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $nome
  * @property string $cognome
  * @property string $email
- * @property string $datanascita
+ * @property \Carbon\Carbon $datanascita
  * @property string $cittadinanza
  * @property string $luogonascita
  * @property string $tipodocumento
  * @property string $nrdocumento
- * @property string $datarilascio
- * @property string $datascadenza
+ * @property \Carbon\Carbon $datarilascio
+ * @property \Carbon\Carbon $datascadenza
  * @property string $luogorilascio
  * @method static \Illuminate\Database\Query\Builder|\App\Guest whereCittadinanza($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Guest whereCognome($value)

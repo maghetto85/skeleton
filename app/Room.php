@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $titolo
  * @property string $descrizione
  * @property string $descrizione_en
+ * @property-read mixed $slug
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Locale[] $locales
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\FotoRoom[] $pics
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Prenotation[] $prenotations
  * @method static \Illuminate\Database\Query\Builder|\App\Room whereDescrizione($value)
@@ -24,6 +26,11 @@ class Room extends Model
     protected $table = 'camere';
     protected $guarded = [];
     public $timestamps = false;
+
+    public function getSlugAttribute()
+    {
+        return str_slug($this->getAttribute('titolo'));
+    }
 
     public function prenotations()
     {

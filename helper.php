@@ -39,3 +39,28 @@
     {
         return "http://www.halex.it/$url";
     }
+
+    function loadMenu(App\Menu $parentMenu = null)
+    {
+        if($parentMenu)
+            $menu = $parentMenu->submenus()->get();
+        else
+            $menu = \App\Menu::whereParent(0)->whereLang(\App::getLocale())->get();
+
+        if($parentMenu)
+            echo "<ul>";
+        else
+            echo '<ul class="nav sf-menu">';
+
+        foreach($menu as $item) {
+
+            echo "<li><a href=\"{$item->url}\">{$item->titolo}</a>";
+            if($item->submenus()->count())
+                loadMenu($item);
+            echo "</li>";
+
+        }
+
+        echo '</ul>';
+
+    }

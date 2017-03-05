@@ -41,9 +41,9 @@ class MenuVController extends Controller
         return $this->edit($menu);
     }
 
-    public function edit(MenuV $menu)
+    public function edit(MenuV $menuv)
     {
-        return view('menuv.form',compact('menu'));
+        return view('menuv.form',['menu' => $menuv]);
     }
 
     public function show(MenuV $menu)
