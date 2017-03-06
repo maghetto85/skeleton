@@ -28,15 +28,20 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.cookiebar.css') }}" />
     <script src="{{ asset('/js/jquery.cookiebar.js') }}"></script>
     <script>
+        window.Laravel = <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+        ]); ?>
+    </script>
+    <script>
         jQuery(document).ready(function(){
             jQuery.cookieBar({
                 message: '{{ __("Questo sito utilizza i cookies per offrirti un'esperienza di navigazione migliore. Usando il nostro servizio accetti l\'impiego di cookie in accordo con la nostra cookie policy.") }}',
                 acceptButton: true,
                 acceptText: 'OK',
                 declineButton: true,
-                declineText: 'Rifiuta',
+                declineText: '{{ __("Rifiuta") }}',
                 policyButton: true,
-                policyText: 'Informativa Estesa',
+                policyText: '{{ __("Informativa Estesa") }}',
                 policyURL: '/cookie-policy',
                 autoEnable: false,
                 acceptOnContinue: false,
@@ -76,7 +81,7 @@
 <!--==============================header=================================-->
 <header id="header" class="bgheader">
     <div class="width_1">
-        <h1 class="navbar-brand navbar-brand_"><a href="{{ url('/') }}"><img src="{{ asset('img/logoHalexRoomFoodPagine.png') }}" alt="Halex Room &amp; Food"></a></h1>
+        <h1 class="navbar-brand navbar-brand_"><a href="{{ route('homepage') }}"><img src="{{ asset('img/logoHalexRoomFoodPagine.png') }}" alt="Halex Room &amp; Food"></a></h1>
         <div class="prenota">
             @foreach(\App\Locale::all() as $locale)
                 <a href="{{ url($locale->code) }}"><img src="{{ $locale->flag }}" alt="" title="{{ $locale->name }}"></a>

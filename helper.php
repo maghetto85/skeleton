@@ -37,15 +37,18 @@
 
     function halex_url($url = null)
     {
-        return "http://www.halex.it/$url";
+        return "https://www.halex.it/$url";
     }
 
     function loadMenu(App\Menu $parentMenu = null)
     {
+
         if($parentMenu)
-            $menu = $parentMenu->submenus()->get();
+            $menu = $parentMenu->submenus();
         else
-            $menu = \App\Menu::whereParent(0)->whereLang(\App::getLocale())->get();
+            $menu = \App\Menu::whereParent(0)->whereLang(\App::getLocale());
+
+        $menu = $menu->orderBy('position')->get();
 
         if($parentMenu)
             echo "<ul>";
@@ -54,7 +57,7 @@
 
         foreach($menu as $item) {
 
-            echo "<li><a href=\"{$item->url}\">{$item->titolo}</a>";
+            echo "<li".($item->url == '/'.\Request::path() ? ' class="active"' : '')."><a href=\"".url($item->url)."\">{$item->titolo}</a>";
             if($item->submenus()->count())
                 loadMenu($item);
             echo "</li>";
@@ -62,5 +65,39 @@
         }
 
         echo '</ul>';
+
+    }
+
+    function promoVenereSPA($id = null)
+    {
+        $service_url = 'http://www.venerespa.it/api/promo.asp'.($id ? '?idpromo='.$id : '');
+        $curl = curl_init($service_url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_ENCODING, 'utf-8');
+        $curl_response = curl_exec($curl);
+        if ($curl_response === false) {
+            $info = curl_getinfo($curl);
+            curl_close($curl);
+            die('error occured during curl exec. Additioanl info: ' . var_export($info));
+        }
+        curl_close($curl);
+
+
+        $decoded = json_decode(utf8_encode($curl_response), true);
+        if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') {
+            die('error occured: ' . $decoded->response->errormessage);
+        }
+
+
+        return $decoded;
+    }
+
+    function getLocale()
+    {
+        $locale = \Request::segment(1);
+
+        if(!in_array($locale, cache('locales'))) $locale = '';
+
+        return $locale;
 
     }

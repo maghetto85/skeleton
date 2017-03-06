@@ -32,6 +32,15 @@ class Room extends Model
         return str_slug($this->getAttribute('titolo'));
     }
 
+    public function getDescrizionelocaleAttribute()
+    {
+        $locale = app()->getLocale();
+        if($this->locales()->whereCode($locale)->count())
+            return $this->locales()->whereCode($locale)->first()->pivot->description;
+
+        return $this->descrizione;
+    }
+
     public function prenotations()
     {
         return $this->hasMany(Prenotation::class, 'idcamera');

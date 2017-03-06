@@ -54,6 +54,8 @@ Route::resources([
 
 Route::get('invoices/{invoice}/print','InvoiceController@getPrint')->name('invoices.print');
 
+Route::post('menu/move/{menu}', 'MenuController@move')->name('menu.move');
+
 Route::post('paragraphs/move/{id}', 'PageParagraphController@move')->name('paragraphs.move');
 Route::post('paragraphs/upload', 'PageParagraphController@upload')->name('paragraphs.upload');
 
@@ -74,5 +76,5 @@ Route::post('fotohome/upload','HomeFotoController@upload')->name('fotohome.uploa
 Route::post('fotohome','HomeFotoController@save')->name('fotohome.save');
 Route::post('fotohome/generate/{locale}', 'HomeFotoController@generate')->name('fotohome.generate');
 
-Route::get('/', 'HomeController@admin');
+Route::get('/', 'HomeController@admin')->name('adminhome');
 

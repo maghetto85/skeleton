@@ -91,7 +91,12 @@ class LocaleController extends Controller
         $data = request()->all();
         unset($data['_token']);
 
-        \File::put($file, json_encode($data));
+        $trans = [];
+        foreach($data as $word) {
+            $trans[$word['key']] = $word['value'];
+        }
+
+        \File::put($file, json_encode($trans));
 
         return redirect()->route('locales.index');
 

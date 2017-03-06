@@ -243,7 +243,7 @@
                     return 'Stato: <strong>'+(prenotazione.stato ? 'Occupata': 'Da Confermare'+(prenotazione.origine == 1 ? ' (Web)' : ''))+'</strong><br>' +
                         'Cliente: <strong>'+prenotazione.Nome+' '+prenotazione.Cognome+'</strong><br>' +
                         'Permanenza: <strong>'+prenotazione.DataArrivo+' - '+prenotazione.DataPartenza+'</strong>' +
-                        '<br><br><a href="{{ url('prenotations')}}/'+prenotazione.id+'/edit" class="btn btn-link">Dettagli Prenotazione</a>';
+                        '<br><br><a href="{{ route('prenotations.index')}}/'+prenotazione.id+'/edit" class="btn btn-link">Dettagli Prenotazione</a>';
 
                 }
 

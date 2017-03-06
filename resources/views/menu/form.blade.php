@@ -144,6 +144,29 @@
             modal.find('.modal-body #modal-name').text(nome);
         })
 
+        $('div#menus-list').on('click', '.btnMoveUp, .btnMoveDown', function(e) {
+
+            var $this = $(this), $row = $this.parents('tr').first(), id = $row.attr('data-id'), pos = parseInt($row.attr('data-position'));
+
+            if ($this.is('.btnMoveUp')) pos--; else pos++;
+
+            $.post('{{ route('menu.move', [null]) }}/' + id, {position: pos}, function () {
+
+                $row.attr('data-position', pos);
+                if ($this.is('.btnMoveUp')) {
+                    $row.insertBefore($row.prev());
+                } else {
+                    $row.insertAfter($row.next());
+                }
+
+                $('div#menus-list').find('tr').each(function (id, li) {
+                    $(li).find('button.btnMoveUp').prop('disabled', $(li).is(':first-child'));
+                    $(li).find('button.btnMoveDown').prop('disabled', $(li).is(':last-child'));
+                })
+
+            });
+        });
+
     </script>
 
 @endsection

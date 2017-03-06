@@ -30,7 +30,7 @@
             <table class="table table-bordered table-condensed">
                 <thead>
                 <tr>
-                    <th>Testo Originale</th>
+                    <th class="text-right col-sm-6">Testo Originale</th>
                     <th>Testo Tradotto</th>
                 </tr>
                 </thead>
@@ -38,7 +38,9 @@
                 @foreach($data as $key => $valore)
                 <tr>
                     <td class="text-right" style="vertical-align: middle;"><label for="{{ $key }}" class="control-label" style="margin: 0;">{{ $key }}:</label></td>
-                    <td><input type="text" name="{{ $key }}" id="{{ $key }}" value="{{ $valore }}" class="form-control input-sm"></td>
+                    <td><input type="text" name="{{ $key }}[value]" id="{{ $key }}" value="{{ $valore }}" class="form-control input-sm">
+                        <input type="hidden" name="{{ $key }}[key]" value="{{$key}}">
+                    </td>
                 </tr>
                 @endforeach
                 </tbody>

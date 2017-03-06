@@ -15,13 +15,6 @@ class AppServiceProvider extends ServiceProvider
     {
         \Carbon\Carbon::setLocale('it');
 
-        \View::composer('*', function($view) {
-            $view->with([
-                'locale' => app()->getLocale()
-            ]);
-        });
-
-
     }
 
     /**

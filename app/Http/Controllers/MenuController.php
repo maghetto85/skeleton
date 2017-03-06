@@ -97,6 +97,20 @@ class MenuController extends Controller
             return redirect()->action('MenuController@index');
     }
 
+    public function move(Menu $menu)
+    {
+        $pos = request('position');
+        if($menu) {
+
+            Menu::whereLang($menu->lang)->wherePosition($pos)->update(['position' => $menu->position]);
+            $menu->position = $pos;
+            $menu->save();
+
+        }
+
+        return $menu;
+    }
+
     public function destroy(Menu $menu)
     {
         $menu->delete();

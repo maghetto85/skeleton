@@ -45,17 +45,17 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapAdminRoutes()
     {
-        Route::group([
+        /*Route::group([
             'middleware' => 'web',
             'domain' => 'admin.homestead.app',
             'namespace' => $this->namespace,
         ], function ($router) {
             require base_path('routes/admin.php');
-        });
+        });*/
 
         Route::group([
             'middleware' => 'web',
-            'domain' => 'admin.homestead.app',
+            'domain' => 'admin.halex.it',
             'prefix' => 'admin',
             'namespace' => $this->namespace,
         ], function ($router) {
@@ -73,20 +73,22 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
 
+        $locale = \Request::segment(1);
+        $this->app->setLocale($locale);
+
         $locales = array_merge(\Cache::rememberForever('locales', function() {
             return \App\Locale::pluck('code')->toArray();
         }),['']);
 
-        foreach($locales as $locale) {
 
-            Route::group([
-                'middleware' => ['web','locale'],
-                'prefix' => $locale,
-                'namespace' => $this->namespace,
-            ], function ($router) use($locale) {
-                require base_path('routes/web.php');
-            });
-        }
+        Route::group([
+            'middleware' => ['web','locale'],
+            'prefix' => getLocale(),
+            'namespace' => $this->namespace,
+        ], function ($router) use($locale) {
+            require base_path('routes/web.php');
+        });
+
 
     }
 

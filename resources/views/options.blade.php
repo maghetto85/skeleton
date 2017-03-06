@@ -27,29 +27,32 @@
                 @foreach($groups as $group)
                 <div class="tab-pane fade{!! $loop->first ? ' active in' : '' !!}" id="group{{ $group->id }}">
 
-                    @foreach($group->options as $option)
+                    <div class="panel-body">
 
-                    <div class="form-group form-group-sm">
-                        <input type="hidden" name="{{ $option->slug }}[id]" value="{{ $option->Id }}">
-                        <label for="{{ $option->slug }}" class="control-label">{{ utf8_decode($option->name) }}:</label>
+                        @foreach($group->options as $option)
+                            <div class="form-group form-group-sm">
 
-                        @if($option->type == OPT_TYPE_TEXT)
-                        <input type="text" name="{{ $option->slug }}[value]" id="{{ $option->slug }}" value="{{ $option->value }}" class="form-control">
-                        @elseif($option->type == OPT_TYPE_LONG_TEXT)
-                        <textarea class="form-control" rows="10" name="{{ $option->slug }}[value]" id="{{ $option->slug }}">{{ $option->value }}</textarea>
+                                <input type="hidden" name="{{ $option->slug }}[id]" value="{{ $option->Id }}">
+                                <label for="{{ $option->slug }}" class="control-label">{{ utf8_decode($option->name) }}:</label>
 
-                        @elseif($option->type == OPT_TYPE_TOGGLE)
+                                @if($option->type == OPT_TYPE_TEXT)
+                                    <input type="text" name="{{ $option->slug }}[value]" id="{{ $option->slug }}" value="{{ $option->value }}" class="form-control">
+                                @elseif($option->type == OPT_TYPE_LONG_TEXT)
+                                    <textarea class="form-control" rows="10" name="{{ $option->slug }}[value]" id="{{ $option->slug }}">{{ $option->value }}</textarea>
 
-                            <select name="{{ $option->slug }}[value]" id="{{ $option->slug }}" class="form-control">
-                                <option value="1"{{ $option->value == 1 ? ' selected' : '' }}>Attivato</option>
-                                <option value="0"{{ $option->value == 0 ? ' selected' : '' }}>Disattivato</option>
-                            </select>
+                                @elseif($option->type == OPT_TYPE_TOGGLE)
 
-                        @endif
+                                    <select name="{{ $option->slug }}[value]" id="{{ $option->slug }}" class="form-control">
+                                        <option value="1"{{ $option->value == 1 ? ' selected' : '' }}>Attivato</option>
+                                        <option value="0"{{ $option->value == 0 ? ' selected' : '' }}>Disattivato</option>
+                                    </select>
+
+                                @endif
+
+                            </div>
+                        @endforeach
 
                     </div>
-
-                    @endforeach
 
                 </div>
                 @endforeach

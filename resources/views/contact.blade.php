@@ -17,45 +17,45 @@
                                 Negli orari o giorni diversi contattare:<br>
                                 3398885506  Gregorio<br>
                                 3459914300 Alessandro                        	</p>
-                            <p><img src="img/email halex.png"></p>
+                            <p><img src="{{ asset('img/email halex.png') }}"></p>
                         </div>
                     </address>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <h2>Compila il modulo per contattarci</h2>
+                    <h2>{{ __("Compila il modulo per contattarci") }}</h2>
                     <form id="contact-form" class="contact-form">
                         <div class="success-message" style="font-size: 20px;font-weight: bold;background-color: red;color: white;">
-                            <div>Modulo inviato correttamente!</div>
+                            <div>{{ __("Modulo inviato correttamente!") }}</div>
                         </div>
                         <div class="coll-1">
                             <label class="name">
-                                <input type="text" placeholder="Name*:" data-constraints="@Required @JustLetters" />
-                                <span class="empty-message">*Campo obbligatorio.</span>
-                                <span class="error-message">*Inserito un nome non valido.</span>
+                                <input type="text" placeholder="Name:" data-constraints="@Required @JustLetters" />
+                                <span class="empty-message">{{ __("Campo obbligatorio.") }}</span>
+                                <span class="error-message">{{ __("Inserito un nome non valido.") }}</span>
                             </label>
                         </div>
                         <div class="coll-2">
                             <label class="email">
-                                <input type="text" placeholder="Email*:" data-constraints="@Required @Email" />
-                                <span class="empty-message">*Campo obbligatorio.</span>
-                                <span class="error-message">*Email inserita non valida.</span>
+                                <input type="text" placeholder="Email:" data-constraints="@Required @Email" />
+                                <span class="empty-message">{{ __("Campo obbligatorio.") }}</span>
+                                <span class="error-message">{{ __("Email inserita non valida.") }}</span>
                             </label>
                         </div>
                         <div class="coll-3">
                             <label class="phone">
                                 <input type="text" placeholder="Telefono:" data-constraints="@JustNumbers"/>
-                                <span class="empty-message">*Campo obbligatorio.</span>
-                                <span class="error-message">*Numero di telefono non valido.</span>
+                                <span class="empty-message">{{ __("Campo obbligatorio.") }}</span>
+                                <span class="error-message">{{ __("Numero di telefono non valido.") }}</span>
                             </label>
                         </div>
                         <label class="message">
-                            <textarea placeholder="Message*:" data-constraints='@Required @Length(min=5,max=999999)'></textarea>
-                            <span class="empty-message">*Campo obbligatorio.</span>
-                            <span class="error-message">*Messaggio troppo corto.</span>
+                            <textarea placeholder="Message:" data-constraints='@Required @Length(min=5,max=999999)'></textarea>
+                            <span class="empty-message">{{ __("Campo obbligatorio.") }}</span>
+                            <span class="error-message">{{ __("Messaggio troppo corto.") }}</span>
                         </label>
                         <div class="buttons_wrapper">
                             <a href="#" data-type="submit" class="btn-link btn-link3">Invia messaggio <span>&bull;</span></a>
-                            <p>*Campi obbligatori</p>
+                            <p>{{ __("Campi obbligatori.") }}</p>
                         </div>
                     </form>
                 </div>

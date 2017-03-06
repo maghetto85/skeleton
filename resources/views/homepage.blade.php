@@ -35,9 +35,9 @@
                 acceptButton: true,
                 acceptText: 'OK',
                 declineButton: true,
-                declineText: 'Rifiuta',
+                declineText: '{{ __("Rifiuta") }}',
                 policyButton: true,
-                policyText: 'Informativa Estesa',
+                policyText: '{{ __("Informativa Estesa") }}',
                 policyURL: '/cookie-policy',
                 autoEnable: false,
                 acceptOnContinue: false,
@@ -117,7 +117,7 @@
     <div class="width_1">
         <div class="navbar-brand navbar-brand_"><img src="{{ asset('img/logoHalexRoomFood.png') }}" alt="Halex Room &amp; Food">
             <div class="prenota">
-                <a href="/prenotazioni" style="color: #fff;">PRENOTA CAMERA</a>
+                <a href="{{ route('prenotations') }}" style="color: #fff;">{{ __("PRENOTA CAMERA") }}</a>
                 @foreach(\App\Locale::all() as $locale)
                     <a href="{{ url($locale->code) }}"><img src="{{ $locale->flag }}" alt="" title="{{ $locale->name }}"></a>
                 @endforeach
@@ -159,7 +159,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-3 row3col">
-                    <h4 class="useful_info">Info utili</h4>
+                    <h4 class="useful_info">{{ __("Info utili") }}</h4>
                     <ul class="list3">
                         @foreach($menuv as $menuitem)
                             <li>
@@ -172,7 +172,7 @@
                     <div class="box1 clearfix">
                         <figure><a href="{{ $homebanner->link }}"><img src="{{ $homebanner->foto1 }}" alt=""></a></figure>
                         <div class="infotext2">
-                            <p><a href="{{ $homebanner->link }}" class="btn-link btn-link2">scopri di più <span>&bull;</span></a></p>
+                            <p><a href="{{ $homebanner->link }}" class="btn-link btn-link2">{{ __('scopri di più') }} <span>&bull;</span></a></p>
                             <h2><img src="{{ $homebanner->foto2 }}" alt=""></h2>
                             <p>{{ $homebanner->testo }}</p>
                         </div>
@@ -186,13 +186,13 @@
                                 </div>
                                 <div class="overflow">
                                     <p class="color5">{{ $room->titolo }}</p>
-                                    <p>{!! str_limit($room->descrizione,150) !!}</p>
-                                    <a href="{{ route('room',[$room->id, $room->slug]) }}" class="btn-link btn-link4">scopri di più.. <span>&bull;</span></a>
+                                    <p>{!! str_limit($room->descrizionelocale,150) !!}</p>
+                                    <a href="{{ route('room',[$room->id, $room->slug]) }}" class="btn-link btn-link4">{{ __('scopri di più') }}... <span>&bull;</span></a>
                                 </div>
                             </li>
                         @endforeach
                     </ul>
-                    <a href="{{route('rooms')}}" class="btn-link btn-link3 badges">tutte le camere <span>&bull;</span></a>
+                    <a href="{{route('rooms')}}" class="btn-link btn-link3 badges">{{ __("tutte le camere") }} <span>&bull;</span></a>
                 </div>
             </div>
         </div>

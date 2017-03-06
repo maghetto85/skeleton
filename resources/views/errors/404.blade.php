@@ -9,7 +9,7 @@
 
             <h2>{{ __('La pagina richiesta non è disponibile') }}</h2>
 
-            <h3><a href="{{ url('/') }}">{{ __('Home Page') }}</a></h3>
+            <h3><a href="{{ route('homepage') }}">{{ __('Home Page') }}</a></h3>
 
         </div>
     </div>

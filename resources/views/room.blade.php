@@ -17,7 +17,7 @@
         <div class="container">
             <h2><a href="{{ route('rooms') }}">Camere</a> <img src="{{ asset('/img/freccia2.png') }}" alt=""> {{$room->titolo}}</h2>
             <div>
-                {!! $room->descrizione !!}
+                {!! $room->descrizionelocale !!}
             </div>
             
             <h5><a href="{{route('prenotations',['room' => $room->id])}}">{{ __('PRENOTA ORA QUESTA CAMERA') }}</a></h5>
@@ -44,7 +44,7 @@
             </div>
 
             <br>
-            <p>Il prezzo della camera comprende uno sconto del 20% sui qualsiasi trattamento estetico da consultare su <a href="/http://www.venerespa.it/" target="_blank">www.venerespa.it</a></p>
+            <p>{{ __("Il prezzo della camera comprende uno sconto del 20% sui qualsiasi trattamento estetico da consultare su") }} <a href="http://www.venerespa.it" target="_blank">www.venerespa.it</a></p>
 
         </div>
     </div>

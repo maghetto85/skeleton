@@ -184,7 +184,7 @@
 
                 <div class="form-group">
                     <button class="btn btn-primary">Salva</button>
-                    <a href="{{ url('prenotations') }}" class="btn btn-link">Torna Indietro</a>
+                    <a href="{{ route('prenotations.index') }}" class="btn btn-link">Torna Indietro</a>
                 </div>
             </div>
         </div>
@@ -323,7 +323,7 @@
 
                 <div class="form-group">
                     <button class="btn btn-primary">Salva</button>
-                    <a href="{{ url('prenotations') }}" class="btn btn-link">Torna Indietro</a>
+                    <a href="{{ route('prenotations.index') }}" class="btn btn-link">Torna Indietro</a>
                 </div>
 
             </div>
