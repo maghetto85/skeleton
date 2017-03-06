@@ -47,7 +47,7 @@
                     <th style="width: 24px;"></th>
                     <th>Lingua</th>
                     <th>Titolo</th>
-                    <th>Slug</th>
+                    <th>Percorso</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -61,7 +61,7 @@
                     </td>
                     <td><img src="{{ $page->locale->flag }}" style="height: 16px;" alt="{{ $page->locale->name }}"></td>
                     <td>{{ $page->titolo }}</td>
-                    <td>{{ $page->slug }}</td>
+                    <td><a href="{{ $url = halex_url($page->lang.'/'.$page->slug) }}" target="_blank">{{ $url }}</a></td>
                 </tr>
                 @empty
                 <tr>

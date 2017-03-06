@@ -45,13 +45,13 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapAdminRoutes()
     {
-        /*Route::group([
+        Route::group([
             'middleware' => 'web',
-            'domain' => 'admin.homestead.app',
+            'domain' => 'admin.halex.it',
             'namespace' => $this->namespace,
         ], function ($router) {
             require base_path('routes/admin.php');
-        });*/
+        });
 
         Route::group([
             'middleware' => 'web',
@@ -84,6 +84,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::group([
             'middleware' => ['web','locale'],
             'prefix' => getLocale(),
+            'domain' => 'halex.it',
             'namespace' => $this->namespace,
         ], function ($router) use($locale) {
             require base_path('routes/web.php');

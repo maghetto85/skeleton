@@ -71,21 +71,9 @@ class PageParagraphController extends Controller
         if(!$file->isValid())
             return ['errore' => 'Foto non valida'];
 
+        $url = '/'.$file->storePublicly('uploads/pagesc', 'halex');
 
-        $ext = '.'.$file->getClientOriginalExtension();
-        $name = str_replace($ext, '', $file->getClientOriginalName());
-
-        $prefix = '';
-        $i = 0;
-        while(\File::exists(app_path('../../httpdocs/uploads/pagesc/'.($fname = $name.$prefix.$ext)))) {
-            $i++;
-            $prefix = "[$i]";
-        }
-
-        $file->move(app_path('../../httpdocs/uploads/pagesc/'), $fname);
-        $url = '/uploads/pagesc/'.$fname;
-
-        return ['url' => $url];
+        return ['url' => $url ];
 
     }
 }

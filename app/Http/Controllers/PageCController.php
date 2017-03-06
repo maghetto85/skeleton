@@ -27,9 +27,10 @@ class PageCController extends Controller
             });
         }
 
-        if($lang = request('lang')) {
+        if($lang = request('lang',session('pagesc.lang','it'))) {
 
-            request()->merge(['filtered' => true]);
+            request()->merge(['lang' => $lang]);
+            \Session::put('pagesc.lang', $lang);
             $pages->whereLang($lang);
 
         }
