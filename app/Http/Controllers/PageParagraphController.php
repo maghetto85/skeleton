@@ -71,7 +71,7 @@ class PageParagraphController extends Controller
         if(!$file->isValid())
             return ['errore' => 'Foto non valida'];
 
-        $url = '/'.$file->storePublicly('uploads/pagesc', 'halex');
+        $url = '/'.$file->storePubliclyAs("uploads/pagesc", $file->getClientOriginalName(), 'halex');
 
         return ['url' => $url ];
 

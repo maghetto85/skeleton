@@ -73,28 +73,16 @@ class PageController extends Controller
         if(!$file->isValid())
             return ['errore' => 'Foto non valida'];
 
-        $ext = '.'.$file->getClientOriginalExtension();
-        $name = str_replace($ext, '', $file->getClientOriginalName());
+        $url = '/'. $file->storeAs("uploads/pages/{$page->Id}", $file->getClientOriginalName(), 'halex');
+        $fname = pathinfo($url, PATHINFO_BASENAME);
+        $miniatura = "/uploads/pages/{$page->Id}/th/".$fname;
 
-        if(!is_dir(app_path("../../httpdocs/uploads/pages/{$page->Id}/")))
-            mkdir(app_path("../../httpdocs/uploads/pages/{$page->Id}/th"),0777, true);
-
-        $prefix = '';
-        $i = 0;
-        while(\File::exists(app_path("../../httpdocs/uploads/pages/{$page->Id}/".($fname = $name.$prefix.$ext)))) {
-            $i++;
-            $prefix = "[$i]";
-        }
+        \Storage::disk('halex')->copy($url, $miniatura);
 
         $image = new \Imagine\Gd\Imagine();
-        $image = $image->open($file->getRealPath());
+        $image = $image->open(\Storage::disk('halex')->url($miniatura));
 
-        $image->copy()->thumbnail(new Box(100, 100))->save(app_path("../../httpdocs/uploads/pages/{$page->Id}/th/$fname"));
-
-        $file->move(app_path("../../httpdocs/uploads/pages/{$page->Id}"), $fname);
-
-        $url = "/uploads/pages/{$page->Id}/".$fname;
-        $miniatura = "/uploads/pages/{$page->Id}/th/".$fname;
+        $image->thumbnail(new Box(100, 100))->save();
 
         $picture = new PagePicture();
         $picture->page()->associate($page);

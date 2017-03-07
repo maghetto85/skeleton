@@ -15,7 +15,7 @@
 
     <div class="row_12">
         <div class="container">
-            <h2><a href="{{ route('rooms') }}">Camere</a> <img src="{{ asset('/img/freccia2.png') }}" alt=""> {{$room->titolo}}</h2>
+            <h2><a href="{{ route('rooms') }}">{{ __("Le nostre camere") }}</a> <img src="{{ asset('/img/freccia2.png') }}" alt=""> {{$room->titolo}}</h2>
             <div>
                 {!! $room->descrizionelocale !!}
             </div>
