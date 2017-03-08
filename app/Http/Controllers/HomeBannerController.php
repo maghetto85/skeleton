@@ -61,7 +61,9 @@ class HomeBannerController extends Controller
             return ['errore' => 'Foto non valida'];
 
 
-        $url = '/'.$file->storePublicly('uploads/homebanner', 'halex');
+        $fname = str_random(40).'.'.$file->getClientOriginalExtension();
+
+        $url = '/'.$file->storePubliclyAs('uploads/homebanner', $fname, 'halex');
 
         $homebanner->update([$field => $url]);
         return ['url' => $url ];

@@ -59,8 +59,8 @@ class HomeFotoController extends Controller
         if(!$file->isValid())
             return ['errore' => 'Foto non valida'];
 
-
-        $url ='/'.$file->storePublicly('uploads/home', 'halex');
+        $fname = str_random(40).'.'.$file->getClientOriginalExtension();
+        $url ='/'.$file->storePubliclyAs('uploads/home', $fname, 'halex');
 
         $homefoto->update(['url' => $url]);
         return $homefoto;

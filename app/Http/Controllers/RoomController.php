@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\FotoRoom;
 use App\Room;
 use Illuminate\Http\Request;
+use Imagine\Image\Box;
+use Storage;
 
 class RoomController extends Controller
 {
@@ -64,36 +67,32 @@ class RoomController extends Controller
             return ['errore' => 'Foto non valida'];
 
 
-        dd($file);
+        $fname = str_random(30).'.'.$file->getClientOriginalExtension();
 
+        $url = '/'.$file->storePubliclyAs("uploads/rooms/{$room->id}", $fname, 'halex');
+        $miniatura = "/uploads/rooms/{$room->id}/th/$fname";
 
-        $ext = '.'.$file->getClientOriginalExtension();
-        $name = str_replace($ext, '', $file->getClientOriginalName());
+        Storage::disk('halex')->copy($url, $miniatura);
 
-        return request()->all();
+        $image = new \Imagine\Gd\Imagine();
+        $image = $image->open(public_path($miniatura));
 
-        $prefix = '';
-        $i = 0;
-        while(\File::exists(app_path('../../httpdocs/uploads/home/'.($fname = $name.$prefix.$ext)))) {
-            $i++;
-            $prefix = "[$i]";
-        }
+        $image->thumbnail(new Box(100, 100))->save();
 
-        $file->move(app_path('../../httpdocs/uploads/home/'), $fname);
-        $url = '/uploads/home/'.$fname;
+        $picture = new FotoRoom();
+        $picture->room()->associate($room);
+        $picture->posizione = $room->pics()->max('posizione')+1;
+        $picture->miniatura = $miniatura;
+        $picture->url = $url;
+        $picture->save();
 
-        $homefoto->update(['url' => $url]);
-        $homefoto->url = $url;
-
-        return $homefoto;
+        return $picture;
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'titolo' => 'required|string',
-            'descrizione' => "required|string",
-            'descrizione_en' => "required|string",
+            'titolo' => 'required|string'
         ]);
 
         $langs = [];
@@ -113,6 +112,42 @@ class RoomController extends Controller
         }
 
         return redirect()->action('RoomController@index');
+    }
+
+    public function removeImage(Room $room, $id)
+    {
+        $image = $room->pics()->find($id);
+        if($image) {
+            $image->delete();
+        }
+
+        return $image;
+    }
+
+    public function moveImage(Room $room, $id)
+    {
+        $pos = request('position');
+        $image = $room->pics()->find($id);
+        if($image) {
+
+            $room->pics()->wherePosizione($pos)->update(['Posizione' => $image->posizione]);
+            $image->posizione = $pos;
+            $image->save();
+        }
+
+        return $image;
+    }
+
+    public function toggleImage(Room $room, $id)
+    {
+        $image = $room->pics()->find($id);
+        if($image) {
+
+            $image->visibile = !$image->visibile;
+            $image->save();
+        }
+
+        return $image;
     }
 
     public function destroy($id)

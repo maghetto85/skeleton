@@ -28,7 +28,7 @@
                     @foreach($room->pics()->whereVisibile(1)->orderBy('posizione')->get() as $id => $picture)
 
                     <li class="col-lg-4 col-md-4 col-sm-4 roomscol">
-                        <figure><a href="{{ halex_url($picture->url) }}" class="thumb"><img src="{{ halex_url($picture->miniatura) }}" alt="{{$room->Titolo}} Halex Room &amp; Food"><span></span><strong></strong></a></figure>
+                        <figure><a href="{{ halex_url($picture->url) }}" class="thumb"><img src="{{ halex_url($picture->url) }}" alt="{{$room->Titolo}} Halex Room &amp; Food"><span></span><strong></strong></a></figure>
                     </li>
 
                     @if(!(($id+1) % 3))

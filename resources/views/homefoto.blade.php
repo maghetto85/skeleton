@@ -63,12 +63,6 @@
                                 <input type="text" name="titolo" class="form-control" value="{{ old('titolo', $foto->titolo) }}">
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group form-group-sm">
-                                <label for="" class="control-label">Titolo Inglese</label>
-                                <input type="text" name="titolo_en" class="form-control" value="{{ old('titolo_en', $foto->titolo_en) }}">
-                            </div>
-                        </div>
                     </div>
 
                     <div class="row">
@@ -76,12 +70,6 @@
                             <div class="form-group form-group-sm">
                                 <label for="" class="control-label">Url</label>
                                 <input type="text" name="link" class="form-control" value="{{ old('link', $foto->link) }}">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group form-group-sm">
-                                <label for="" class="control-label">Url Inglese</label>
-                                <input type="text" name="link_en" class="form-control" value="{{ old('link_en', $foto->link_en) }}">
                             </div>
                         </div>
                     </div>
@@ -166,7 +154,11 @@
                     value: $pulsante.parents('.panel-body').attr('data-foto')
                 });
 
-                $.post('{{ route('fotohome.save') }}', data);
+                $.post('{{ route('fotohome.save') }}', data, function() {
+
+
+
+                });
 
             })
         })

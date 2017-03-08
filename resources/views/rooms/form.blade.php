@@ -55,7 +55,7 @@
                     @endif
                 </div>
 
-                <div class="form-group form-group-sm{{ $errors->has('descrizione') ? ' has-error' : '' }}">
+                {{--<div class="form-group form-group-sm{{ $errors->has('descrizione') ? ' has-error' : '' }}">
                     <label for="descrizione" class="control-label">Descrizione:</label>
                     <textarea id="descrizione" name="descrizione" class="form-control">{{ old('descrizione', $room->descrizione) }}</textarea>
                     @if($errors->has('descrizione'))
@@ -73,7 +73,7 @@
                             {{ $errors->first('descrizione_en') }}
                         </p>
                     @endif
-                </div>
+                </div>--}}
 
                 <ul class="nav nav-tabs">
                 @foreach($locales = \App\Locale::orderBy('name')->get() as $locale)
@@ -126,15 +126,15 @@
             <div class="panel-body" id="images-box">
 
                 <ul id="images">
-                    @foreach($room->pics as $pic)
-                    <li class="col-xs-6 col-sm-3 col-md-2" style="padding-bottom: 10px; height: 110px; text-align: center">
+                    @foreach($room->pics()->orderBy('posizione')->get() as $pic)
+                    <li class="col-xs-6 col-sm-3 col-md-2" style="padding-bottom: 10px; height: 110px; text-align: center" data-position="{{ $pic->posizione }}" data-image="{{ $pic->id }}">
                         <div class="well" style="padding: 2px;">
                             <img src="http://www.halex.it{{ $pic->miniatura }}" alt="" class="img-rounded center-block" style="max-width: 100px; max-height: 100px;">
                             <div class="btn-group btn-group-xs">
-                                <button class="btn btn-default"><i class="fa fa-chevron-left"></i></button>
-                                <button class="btn btn-default"><i class="fa fa-eye-slash"></i></button>
-                                <button class="btn btn-default"><i class="fa fa-remove"></i></button>
-                                <button class="btn btn-default"><i class="fa fa-chevron-right"></i></button>
+                                <button class="btn btnMoveLeft btn-default"><i class="fa fa-chevron-left"></i></button>
+                                <button class="btn btnToggle btn-default"><i class="fa fa-eye{{ !$pic->visibile ? '-slash' : '' }}"></i></button>
+                                <button class="btn btnRemove btn-danger"><i class="fa fa-remove"></i></button>
+                                <button class="btn btnMoveRight btn-default"><i class="fa fa-chevron-right"></i></button>
                             </div>
                         </div>
                     </li>
@@ -161,8 +161,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/jquery.tinymce.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/plupload/2.2.1/plupload.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/plupload/2.2.1/jquery.plupload.queue/jquery.plupload.queue.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/plupload/2.2.1/i18n/it.js"></script>
+
 
     <script>
 
@@ -180,65 +179,101 @@
             menubar: false
         });
 
-        $("#uploader").pluploadQueue({
-            // General settings
-            runtimes : 'html5,flash,silverlight,html4',
-            url : "{{ route('rooms.upload') }}",
 
+        var uploader = new plupload.Uploader({
+            browse_button: $('.btn-aggiungi-pic')[0],
+            url: '{{ route('rooms.upload') }}',
             multipart_params: {
                 id: {{ $room->id }},
                 _token: Laravel.csrfToken
-            },
-
-            // Maximum file size
-            max_file_size : '2mb',
-
-            chunk_size: '1mb',
-
-            // Specify what files to browse for
-            filters : [
-                {title : "Image files", extensions : "jpg,gif,png"}
-            ],
-
-            // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
-            dragdrop: true,
-
-            // Views to activate
-            views: {
-                list: true,
-                thumbs: true, // Show thumbs
-                active: 'thumbs'
-            },
-
-            // Flash settings
-            flash_swf_url : '/admin/js/plupload/Moxie.swf',
-
-            // Silverlight settings
-            silverlight_xap_url : '/admin/js/plupload/Moxie.xap',
-
-            init: {
-
-                fileUploaded: function (uploader, file, response) {
-
-                },
-
-                uploadComplete: function(uploader, files) {
-
-                    //location.reload();
-
-                }
             }
+        });
 
+        uploader.init();
 
+        uploader.bind('QueueChanged', function() {
+            uploader.start();
+            $('.btn-aggiungi-pic').prop('disabled',true);
+        });
+
+        uploader.bind('UploadProgress', function(up, file) {
+            $('.btn-aggiungi-pic').html('Caricamento in corso... ' + file.percent + "%");
+        });
+
+        uploader.bind('fileUploaded', function(uploader, file, response) {
+
+            var homefoto = JSON.parse(response.response);
+
+            var $box = $('.panel-body[data-foto='+homefoto.id+']');
+            $box.find('img').attr('src','http://www.halex.it'+homefoto.url);
+
+            $('.btn-aggiungi-pic').prop('disabled',false).text('Cambia Immagine');
 
         });
 
-        $(function() {
-            $('button.btn-aggiungi-pic').click(function(e) {
-                e.preventDefault();
-                $('#uploader').show();
-                $('#images-box').hide();
-            })
+        uploader.bind('uploadComplete', function(up, files) {
+            location.reload();
+        });
+
+
+        $('#images-box').on('click','button.btnMoveLeft, button.btnMoveRight', function(e) {
+
+            var $this = $(this), $li = $this.parents('li').first(), id = $li.attr('data-image'), pos = parseInt($li.attr('data-position'));
+
+            if($this.is('.btnMoveLeft')) pos--; else pos++;
+
+            $.post('{{ route('rooms.images.move', [$room->id, null]) }}/'+id, {position: pos}, function() {
+
+                $li.attr('data-position', pos);
+                if($this.is('.btnMoveLeft')) {
+                    $li.insertBefore($li.prev());
+                } else {
+                    $li.insertAfter($li.next());
+                }
+                $('div#images-box li').each(function(id, li) {
+
+                    $(li).find('button.btnMoveLeft').prop('disabled',$(li).is(':first-child'));
+                    $(li).find('button.btnMoveRight').prop('disabled',$(li).is(':last-child'));
+
+                })
+            });
+
+
+
+        }).on('click','button.btnRemove', function(e) {
+
+            var $this = $(this), $li = $this.parents('li').first(), id = $li.attr('data-image');
+
+            $.post('{{ route('rooms.images.remove', [$room->id, null]) }}/'+id, function() {
+                $li.remove();
+                $('div#images-box li').each(function(id, li) {
+
+                    $(li).find('button.btnMoveLeft').prop('disabled',$(li).is(':first-child'));
+                    $(li).find('button.btnMoveRight').prop('disabled',$(li).is(':last-child'));
+
+                })
+            });
+
+        }).on('click','button.btnToggle', function(e) {
+
+            var $this = $(this), $li = $this.parents('li').first(), id = $li.attr('data-image');
+
+            $.post('{{ route('rooms.images.toggle', [$room->id, null]) }}/'+id, function(response) {
+
+                if(response.visibile) {
+                    $this.find('i').removeClass('fa-eye-slash').addClass('fa-eye');
+                } else {
+                    $this.find('i').removeClass('fa-eye').addClass('fa-eye-slash');
+                }
+
+                $('div#images-box li').each(function(id, li) {
+
+                    $(li).find('button.btnMoveLeft').prop('disabled',$(li).is(':first-child'));
+                    $(li).find('button.btnMoveRight').prop('disabled',$(li).is(':last-child'));
+
+                })
+            });
+
         })
 
     </script>

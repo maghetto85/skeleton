@@ -73,14 +73,14 @@ class PageController extends Controller
         if(!$file->isValid())
             return ['errore' => 'Foto non valida'];
 
-        $url = '/'. $file->storeAs("uploads/pages/{$page->Id}", $file->getClientOriginalName(), 'halex');
-        $fname = pathinfo($url, PATHINFO_BASENAME);
+        $fname = str_random(30).'.'.$file->getClientOriginalExtension();
+        $url = '/'. $file->storeAs("uploads/pages/{$page->Id}", $fname, 'halex');
         $miniatura = "/uploads/pages/{$page->Id}/th/".$fname;
 
         \Storage::disk('halex')->copy($url, $miniatura);
 
         $image = new \Imagine\Gd\Imagine();
-        $image = $image->open(\Storage::disk('halex')->url($miniatura));
+        $image = $image->open(public_path($miniatura));
 
         $image->thumbnail(new Box(100, 100))->save();
 

@@ -69,6 +69,12 @@ Route::post('pages/upload','PageController@upload')->name('pages.upload');
 Route::post('pages/{page}/images/destroy/{id}', 'PageController@removeImage')->name('pages.images.remove');
 Route::post('pages/{page}/images/move/{id}', 'PageController@moveImage')->name('pages.images.move');
 
+Route::post('rooms/{room}/images/destroy/{id}', 'RoomController@removeImage')->name('rooms.images.remove');
+Route::post('rooms/{room}/images/move/{id}', 'RoomController@moveImage')->name('rooms.images.move');
+Route::post('rooms/{room}/images/toggle/{id}', 'RoomController@toggleImage')->name('rooms.images.toggle');
+
+
+
 Route::post('rooms/upload','RoomController@upload')->name('rooms.upload');
 
 Route::get('fotohome','HomeFotoController@index')->name('fotohome');
