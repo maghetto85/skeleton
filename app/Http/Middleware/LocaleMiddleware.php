@@ -18,7 +18,7 @@ class LocaleMiddleware
     {
         $locale = $request->segment(1);
 
-        if(!in_array($locale, cache('locales'))) $locale = 'it';
+        if(!in_array($locale, \App\Locale::pluck('code')->toArray())) $locale = 'it';
 
         \App::setLocale($locale);
         \App::singleton('locale', function() {

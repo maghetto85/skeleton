@@ -76,10 +76,7 @@ class RouteServiceProvider extends ServiceProvider
         $locale = \Request::segment(1);
         $this->app->setLocale($locale);
 
-        $locales = array_merge(\Cache::rememberForever('locales', function() {
-            return \App\Locale::pluck('code')->toArray();
-        }),['']);
-
+        $locales = \App\Locale::pluck('code')->toArray();
 
         Route::group([
             'middleware' => ['web','locale'],

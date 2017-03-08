@@ -50,6 +50,7 @@ return [
 
         'halex' => [
             'driver' => 'local',
+            'url' => '/',
             'root' => public_path('')
         ],
 

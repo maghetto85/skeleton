@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Locale;
 use Illuminate\Http\Request;
+use Imagine\Image\Box;
 
 class LocaleController extends Controller
 {
@@ -62,6 +63,10 @@ class LocaleController extends Controller
 
             $name = $request->get('code').'.png';
             $file = $request->file('flag')->storeAs('img/flags', $name, 'halex');
+            $image = new \Imagine\Gd\Imagine();
+            $image = $image->open(public_path($file));
+            $image->thumbnail(new Box(24,24))->save();
+
         }
 
         $locale = Locale::query()->updateOrCreate(['id' => $id], $request->only(['name','code']));

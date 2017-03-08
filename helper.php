@@ -96,7 +96,7 @@
     {
         $locale = \Request::segment(1);
 
-        if(!in_array($locale, cache('locales'))) $locale = '';
+        if(!in_array($locale, \App\Locale::pluck('code')->toArray())) $locale = '';
 
         return $locale;
 
