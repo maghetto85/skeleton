@@ -1067,7 +1067,7 @@ header {
     transition: all 0.15s ease;
 }
 .btn-link2:hover {
- color:;
+    color:;
     text-decoration: none;
     -webkit-transition: all 0.15s ease;
     transition: all 0.15s ease;
@@ -2000,27 +2000,32 @@ img {
 
 
     .prenota > a {
-      margin-right: 15px;
+      margin-right: 10px;
     }
 
 }
 
 @media(min-width: 701px) {
 
-  .prenota {
-    padding: 10px;
-    position: absolute;;
-    background-color: #6F6F6F;
-    top: 0;
-    right: 0;
-  }
+    .prenota {
+        padding: 10px;
+        position: absolute;;
+        font-size: 16px;
+        background-color: #6F6F6F;
+        top: 0;
+        right: 0;
+        border-radius: 0 0 0 8px;
+    }
 
-  .prenota > a:first-child {
-    padding: 4px;
-    background-color: #6F6F6F;
-    margin-right: 20px;
-  }
+    .prenota > a.prenota-link {
+        padding: 4px;
+        color: #fff;
+        text-decoration: none;
+        background-color: #6F6F6F;
+        margin-right: 20px;
+    }
 
-  .prenota > a {
-    margin-right: 10px;
-  }
+    .prenota > a {
+        margin-right: 5px;
+    }
+}

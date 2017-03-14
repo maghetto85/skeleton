@@ -25,6 +25,7 @@ class Room extends Model
 {
     protected $table = 'camere';
     protected $guarded = [];
+    protected $hidden = ['descrizione','descrizione_en'];
     public $timestamps = false;
 
     public function getSlugAttribute()

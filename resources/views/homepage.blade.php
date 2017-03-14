@@ -117,7 +117,7 @@
     <div class="width_1">
         <div class="navbar-brand navbar-brand_"><img src="{{ asset('img/logoHalexRoomFood.png') }}" alt="Halex Room &amp; Food">
             <div class="prenota">
-                <a href="{{ route('prenotations') }}" style="color: #fff;">{{ __("PRENOTA CAMERA") }}</a>
+                <a class="prenota-link" href="{{ route('prenotations') }}" style="color: #fff;">{{ __("PRENOTA CAMERA") }}</a>
                 @foreach(\App\Locale::all() as $locale)
                     <a href="{{ url($locale->code) }}"><img src="{{ $locale->flag }}" alt="" title="{{ $locale->name }}"></a>
                 @endforeach
@@ -172,9 +172,10 @@
                     <div class="box1 clearfix">
                         <figure><a href="{{ $homebanner->link }}"><img src="{{ $homebanner->foto1 }}" alt=""></a></figure>
                         <div class="infotext2">
+                            <p>{{ $homebanner->testo }}</p>
                             <p><a href="{{ $homebanner->link }}" class="btn-link btn-link2">{{ __('scopri di più') }} <span>&bull;</span></a></p>
                             <h2><img src="{{ $homebanner->foto2 }}" alt=""></h2>
-                            <p>{{ $homebanner->testo }}</p>
+
                         </div>
                     </div>
                 </div>

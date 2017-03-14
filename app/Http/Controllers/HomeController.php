@@ -41,8 +41,9 @@ class HomeController extends Controller
 
             $q->whereBetween('DataArrivo',[$first, $last]);
             $q->orWhereRaw('DATE_SUB(DataPartenza, INTERVAL 1 DAY) BETWEEN ? AND ?',[$first, $last]);
+            $q->select(['Nome','Cognome','DataPartenza','DataArrivo','id','idcliente','idcamera','DataInserimento','stato','origine']);
 
-        }])->orderBy('titolo')->get();
+        }])->orderBy('titolo')->get(['id','titolo']);
 
         return view('home', compact('menu','rooms','month','year','monthdays'));
     }
