@@ -38,7 +38,12 @@
                 @foreach($data as $key => $valore)
                 <tr>
                     <td class="text-right" style="vertical-align: middle;"><label for="{{ $key }}" class="control-label" style="margin: 0;">{{ $key }}:</label></td>
-                    <td><input type="text" name="{{ $key }}[value]" id="{{ $key }}" value="{{ $valore }}" class="form-control input-sm">
+                    <td>
+                        @if(strlen($key) > 35)
+                            <textarea name="{{ $key }}[value]" id="{{ $key }}" class="form-control input-sm" rows="5">{{ $valore }}</textarea>
+                        @else
+                        <input type="text" name="{{ $key }}[value]" id="{{ $key }}" value="{{ $valore }}" class="form-control input-sm">
+                        @endif
                         <input type="hidden" name="{{ $key }}[key]" value="{{$key}}">
                     </td>
                 </tr>
